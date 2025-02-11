@@ -9,7 +9,7 @@ import {styles} from './styles';
 
 const Signin = () => {
   const onSignUp = () => {
-    console.log('Helli');
+    console.log('Hello');
   };
 
   return (
