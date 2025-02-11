@@ -8,16 +8,19 @@ import Seperator from '../../../components/Seperator';
 import GoogleLogin from '../../../components/GoogleLogin';
 import {styles} from './styles';
 
-const Signup = () => {
+const Signup = ({navigation}) => {
   const [checked, setChecked] = useState(false);
-
   const onSignIn = () => {
-    console.log('Helli');
+    navigation.navigate('Signin');
+  };
+
+  const onBack = () => {
+    navigation.goBack();
   };
 
   return (
     <ScrollView style={styles.container}>
-      <AuthHeader title="Sign Up" />
+      <AuthHeader onBackPress={onBack} title="Sign Up" />
       <Input label="Name" placeholder="John Doe" />
       <Input label="E-mail" placeholder="example@gmail.com" />
       <Input isPassword label="Password" placeholder="********" />
