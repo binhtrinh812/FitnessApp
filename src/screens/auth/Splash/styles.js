@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 250,
+    height: 200,
   },
   titleContainer: {
     marginVertical: 54,
@@ -32,4 +32,5 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 30,
   },
+  buttonCont: {width: '100%', flexDirection: 'row'},
 });

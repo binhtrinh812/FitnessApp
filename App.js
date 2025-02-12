@@ -5,6 +5,7 @@ import Signup from './src/screens/auth/Signup';
 import Home from './src/screens/app/Home';
 import Favorites from './src/screens/app/Favorites';
 import Profile from './src/screens/app/Profile';
+import ProductDetails from './src/screens/app/ProductDetails';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Config from 'react-native-config';
 import {NavigationContainer} from '@react-navigation/native';
@@ -37,15 +38,11 @@ const Tabs = () => (
             : require('./src/assets/tabs/bookmark.png');
         }
 
-        return <Image style={{width: 26, height: 26}} source={icon} />;
+        return <Image style={{width: 24, height: 24}} source={icon} />;
       },
       headerShown: false,
       tabBarShowLabel: false,
-      tabBarStyle: {
-        borderTopColor: colors.lightGrey,
-        backgroundColor: '#fff',
-        height: 60,
-      },
+      tabBarStyle: {borderTopColor: colors.lightGrey},
     })}>
     <Tab.Screen name="Home" component={Home} />
     <Tab.Screen name="Favorites" component={Favorites} />
@@ -79,6 +76,11 @@ const App = () => {
               <Stack.Screen
                 name="Tabs"
                 component={Tabs}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="ProductDetails"
+                component={ProductDetails}
                 options={{headerShown: false}}
               />
             </>
