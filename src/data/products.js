@@ -3,7 +3,7 @@ export const products = [
     id: 1,
     title: 'Loft Style Chair',
     image:
-      'https://grandrapidschair.com/wp-content/uploads/2016/01/250_Brady_Graphite_Honey-1.jpg',
+      'https://www.woods-furniture.co.uk/images/products/standard/7706_8118.jpg',
     category: 1,
     price: '$ 20.00',
   },
@@ -11,7 +11,7 @@ export const products = [
     id: 2,
     title: 'Wood Mini Table',
     image:
-      'https://ii1.pepperfry.com/media/catalog/product/f/o/800x880/foldable-table-in-natural-colour-by-clasicraft-foldable-table-in-natural-colour-by-clasicraft-ahmtub.jpg',
+      'https://www.woods-furniture.co.uk/images/products/standard/7706_8118.jpg',
     category: 2,
     price: '$ 25.00',
   },

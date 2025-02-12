@@ -37,8 +37,7 @@ const Tabs = () => (
             : require('./src/assets/tabs/bookmark.png');
         }
 
-        // You can return any component that you like here!
-        return <Image style={{width: 24, height: 24}} source={icon} />;
+        return <Image style={{width: 26, height: 26}} source={icon} />;
       },
       headerShown: false,
       tabBarShowLabel: false,
@@ -59,10 +58,9 @@ const App = () => {
 
   useEffect(() => {
     GoogleSignin.configure({
-      scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
-      webClientId: Config.GOOGLE_WEB_CLIENT_ID, // client ID of type WEB for your server (needed to verify user ID and offline access)
-      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-      iosClientId: Config.GOOGLE_IOS_CLIENT_ID, // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+      scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+      webClientId: Config.GOOGLE_WEB_CLIENT_ID,
+      offlineAccess: true,
     });
   }, []);
 

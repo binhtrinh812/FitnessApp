@@ -6,19 +6,20 @@ export const styles = StyleSheet.create({
     marginHorizontal: 8,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
+    paddingBottom: 30,
+    paddingTop: 20,
   },
   title: {
     color: colors.grey,
   },
   image: {
-    width: 32,
-    height: 32,
+    width: 30,
+    height: 30,
   },
   imageContainer: {
     backgroundColor: colors.lightGrey,
-    padding: 8,
-    borderRadius: 8,
+    padding: 10,
+    borderRadius: 15,
     marginBottom: 8,
   },
 });
