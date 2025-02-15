@@ -14,10 +14,12 @@
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.0",
     "@react-navigation/native-stack": "^6.1.0",
+    "axios": "^1.7.9",
     "react": "17.0.2",
     "react-native": "0.68.2",
     "react-native-config": "^1.5.5",
     "react-native-gesture-handler": "^2.4.0",
+    "react-native-image-picker": "^4.8.5",
     "react-native-safe-area-context": "^3.4.1",
     "react-native-screens": "^3.0.0"
   },
