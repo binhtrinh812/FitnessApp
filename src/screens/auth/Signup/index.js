@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Alert, ScrollView, Text, View } from 'react-native';
 import AuthHeader from '../../../components/AuthHeader';
 import Button from '../../../components/Button';
 import Checkbox from '../../../components/Checkbox';
 import Input from '../../../components/Input';
-import Seperator from '../../../components/Seperator';
+import Separator from '../../../components/Separator';
 import GoogleLogin from '../../../components/GoogleLogin';
 import { styles } from './styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { request } from '../../../utils/request';
+import { signup } from '../../../utils/backendCalls';
+import { UserContext } from '../../../../App';
 
 const Signup = ({ navigation }) => {
     const [checked, setChecked] = useState(false);
-    const [values, setValues] = useState({})
+    const [values, setValues] = useState({});
+    const { setUser } = useContext(UserContext);
 
     const onSignIn = () => {
         navigation.navigate('Signin')
@@ -43,12 +46,10 @@ const Signup = ({ navigation }) => {
                 return;
             }
     
-            const response = await request({
-                url: '/user/register',
-                method: 'post',
-                data: values,
-            });
-            console.log('response :>> ', response);
+            const token = await signup(values);
+            setUser({ token })
+
+            console.log('token :>> ', token);
         } catch(error) {
             console.log('error :>> ', error);
         }
@@ -71,7 +72,7 @@ const Signup = ({ navigation }) => {
 
                 <Button onPress={onSubmit} style={styles.button} title="Sign Up"  />
 
-                <Seperator text="Or sign up with" />
+                <Separator text="Or sign up with" />
 
                 <GoogleLogin />
 
