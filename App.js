@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import Config from "react-native-config";
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React, {useEffect, useState} from 'react';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import Config from 'react-native-config';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Routes from './Routes';
 
 export const UserContext = React.createContext();
@@ -20,13 +20,13 @@ const App = () => {
       offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
       iosClientId: Config.GOOGLE_IOS_CLIENT_ID, // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
     });
-  }, [])
+  }, []);
 
   return (
     <SafeAreaProvider>
-      <UserContext.Provider value={{ user, setUser }}>
-        <ProfileContext.Provider value={{ profile, setProfile }}>
-          <ServicesContext.Provider value={{ services, setServices }}>
+      <UserContext.Provider value={{user, setUser}}>
+        <ProfileContext.Provider value={{profile, setProfile}}>
+          <ServicesContext.Provider value={{services, setServices}}>
             <Routes />
           </ServicesContext.Provider>
         </ProfileContext.Provider>
