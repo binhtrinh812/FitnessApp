@@ -10,12 +10,10 @@ import {styles} from './styles';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {request} from '../../../utils/request';
 import {signup} from '../../../utils/backendCalls';
-import {UserContext} from '../../../../App';
 
 const Signup = ({navigation}) => {
   const [checked, setChecked] = useState(false);
   const [values, setValues] = useState({});
-  const {setUser} = useContext(UserContext);
 
   const onSignIn = () => {
     navigation.navigate('Signin');
@@ -52,7 +50,6 @@ const Signup = ({navigation}) => {
       }
 
       const token = await signup(values);
-      setUser({token});
 
       console.log('token :>> ', token);
     } catch (error) {

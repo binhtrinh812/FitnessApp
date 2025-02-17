@@ -3,13 +3,13 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Config from 'react-native-config';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Routes from './Routes';
+import {useAuth0, Auth0Provider} from 'react-native-auth0';
 
 export const UserContext = React.createContext();
 export const ProfileContext = React.createContext();
 export const ServicesContext = React.createContext([]);
 
 const App = () => {
-  const [user, setUser] = useState();
   const [profile, setProfile] = useState();
   const [services, setServices] = useState();
 
@@ -23,15 +23,17 @@ const App = () => {
   }, []);
 
   return (
-    <SafeAreaProvider>
-      <UserContext.Provider value={{user, setUser}}>
+    <Auth0Provider
+      domain={Config.CLIENT_DOMAIN}
+      clientId={Config.CLIENT_ID}>
+      <SafeAreaProvider>
         <ProfileContext.Provider value={{profile, setProfile}}>
           <ServicesContext.Provider value={{services, setServices}}>
             <Routes />
           </ServicesContext.Provider>
         </ProfileContext.Provider>
-      </UserContext.Provider>
-    </SafeAreaProvider>
+      </SafeAreaProvider>
+    </Auth0Provider>
   );
 };
 

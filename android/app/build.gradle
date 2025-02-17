@@ -29,6 +29,7 @@ android {
 
     defaultConfig {
         applicationId "com.fitnessapp"
+        manifestPlaceholders = [auth0Domain: "dev-sl4wm61ke5cu1fpn.us.auth0.com", auth0Scheme: "com.fitnessapp.auth0"]
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -141,6 +142,8 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    implementation project(':react-native-auth0')
 
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
 

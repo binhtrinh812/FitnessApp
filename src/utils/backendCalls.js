@@ -1,5 +1,6 @@
 import {request} from './request';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from 'react-native-config';
 
 export const login = async values => {
   try {
@@ -149,3 +150,21 @@ export const addService = async data => {
     console.log('e add services :>> ', e.response);
   }
 };
+
+export const getToken = async (user) => {
+  try {
+    const response = await request({
+      url: `${Config.CLIENT_DOMAIN}/oauth/token`,
+      method: 'POST',
+      data: {
+        ...user,
+        client_id: Config.CLIENT_ID,
+        client_serect: Config.CLIENT_SECRET,
+      },
+    });
+
+    console.log(response.data);
+  } catch (e) {
+    console.log('e token :>> 213', e);
+  }
+}

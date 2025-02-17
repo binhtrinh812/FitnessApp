@@ -2,14 +2,25 @@ import React from 'react';
 import {Text, Image, View, Pressable} from 'react-native';
 import Button from '../../../components/Button';
 import {styles} from './styles';
+import {useAuth0} from 'react-native-auth0';
 
 const Splash = ({navigation}) => {
-  const onSignup = () => {
-    navigation.navigate('Signup');
+  const {authorize, clearSession, user, error, isLoading} = useAuth0();
+  const onSignup = async () => {
+    await authorize({additionalParameters: {screen_hint: 'signup'}});
   };
 
-  const onSignin = () => {
-    navigation.navigate('Signin');
+  const onSignin = async () => {
+    try {
+      await authorize(
+        {
+          audience: "https://hello-world.example.com",
+          scope: 'openid profile email',
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

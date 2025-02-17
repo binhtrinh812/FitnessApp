@@ -7,12 +7,12 @@ import ListItem from '../../../components/ListItem';
 import Button from '../../../components/Button';
 import {getProfile} from '../../../utils/backendCalls';
 import {ProfileContext} from '../../../../App';
-import {UserContext} from '../../../../App';
+import {useAuth0} from 'react-native-auth0';
 
 const Profile = ({navigation}) => {
+  const {clearSession} = useAuth0();
   const num = 10;
   const {profile, setProfile} = useContext(ProfileContext);
-  const {user, setUser} = useContext(UserContext);
 
   useEffect(() => {
     (async () => {
@@ -22,8 +22,8 @@ const Profile = ({navigation}) => {
     })();
   }, [setProfile]);
 
-  const onLogout = () => {
-    setUser(null);
+  const onLogout = async () => {
+    await clearSession();
   };
 
   const onSettingsPress = () => {

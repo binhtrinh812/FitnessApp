@@ -1,72 +1,67 @@
-import React, {useContext, useState} from 'react';
-import {ScrollView, Text} from 'react-native';
-import AuthHeader from '../../../components/AuthHeader';
-import Button from '../../../components/Button';
-import Input from '../../../components/Input';
-import Separator from '../../../components/Separator';
-import GoogleLogin from '../../../components/GoogleLogin';
-import {styles} from './styles';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {login} from '../../../utils/backendCalls';
-import {UserContext} from '../../../../App';
+import React from 'react';
+import {Button, Text, View, StyleSheet} from 'react-native';
+import {useAuth0, Auth0Provider} from 'react-native-auth0';
 
-const Signin = ({navigation}) => {
-  const [values, setValues] = useState({});
-  const {setUser} = useContext(UserContext);
+const Home = () => {
+  const {authorize, clearSession, user, error, isLoading} = useAuth0();
 
-  const onSignUp = () => {
-    navigation.navigate('Signup');
+  const onLogin = async () => {
+    try {
+      await authorize();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  const onBack = () => {
-    navigation.goBack();
+  const onLogout = async () => {
+    try {
+      await clearSession();
+    } catch (e) {
+      console.log('Log out cancelled');
+    }
   };
 
-  const onChange = (key, value) => {
-    setValues(v => ({...v, [key]: value}));
-  };
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading</Text>
+      </View>
+    );
+  }
 
-  const onSubmit = async () => {
-    const token = await login(values);
-
-    setUser({token});
-  };
+  const loggedIn = user !== undefined && user !== null;
 
   return (
-    <SafeAreaView>
-      <ScrollView style={styles.container}>
-        <AuthHeader onBackPress={onBack} title="Sign In" />
+    <View style={styles.container}>
+      {loggedIn && <Text>You are logged in as {user.name}</Text>}
+      {!loggedIn && <Text>You are not logged in</Text>}
+      {error && <Text>{error.message}</Text>}
 
-        <Input
-          value={values.email}
-          onChangeText={v => onChange('email', v)}
-          label="E-mail"
-          placeholder="example@gmail.com"
-        />
-        <Input
-          value={values.password}
-          onChangeText={v => onChange('password', v)}
-          isPassword
-          label="Password"
-          placeholder="*******"
-        />
-
-        <Button onPress={onSubmit} style={styles.button} title="Sign In" />
-
-        <Separator text="Or sign in with" />
-
-        <GoogleLogin />
-
-        <Text style={styles.footerText}>
-          Don't have an account?
-          <Text onPress={onSignUp} style={styles.footerLink}>
-            {' '}
-            Sign Up
-          </Text>
-        </Text>
-      </ScrollView>
-    </SafeAreaView>
+      <Button
+        onPress={loggedIn ? onLogout : onLogin}
+        title={loggedIn ? 'Log Out' : 'Log In'}
+      />
+    </View>
   );
 };
 
-export default React.memo(Signin);
+const Signin = () => {
+  return (
+    <Auth0Provider
+      domain={'dev-sl4wm61ke5cu1fpn.us.auth0.com'}
+      clientId={'ZyZSMTKpiXm5041bLXDzTwfQ6PFkeLSk'}>
+      <Home />
+    </Auth0Provider>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+});
+
+export default Signin;

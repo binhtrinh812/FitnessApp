@@ -14,9 +14,7 @@ import {colors} from './src/utils/colors';
 import {Image} from 'react-native';
 import CreateListing from './src/screens/app/CreateListing';
 import MyListings from './src/screens/app/MyListings';
-import {UserContext} from './App';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {addTokenToAxios} from './src/utils/request';
+import {useAuth0} from 'react-native-auth0';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -82,25 +80,7 @@ const Tabs = () => (
 );
 
 const Routes = () => {
-  const [loading, setLoading] = useState(true);
-  const {user, setUser} = useContext(UserContext);
-
-  useEffect(() => {
-    (async () => {
-      const token = await AsyncStorage.getItem('auth_token');
-      setUser({token});
-
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (user?.token) {
-      addTokenToAxios(user?.token);
-    }
-  }, [user]);
+  const {user} = useAuth0();
 
   const theme = {
     colors: {
@@ -108,14 +88,10 @@ const Routes = () => {
     },
   };
 
-  if (loading) {
-    return null;
-  }
-
   return (
     <NavigationContainer theme={theme}>
       <Stack.Navigator>
-        {user?.token ? (
+        {user ? (
           <>
             <Stack.Screen
               name="Tabs"
