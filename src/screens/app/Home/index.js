@@ -6,9 +6,9 @@ import Header from '../../../components/Header';
 import {categories} from '../../../data/categories';
 import CategoryBox from '../../../components/CategoryBox';
 import ProductHomeItem from '../../../components/ProductHomeItem';
-import {getServices, getToken} from '../../../utils/backendCalls';
+import {getServices} from '../../../utils/backendCalls';
 import {ServicesContext} from '../../../../App';
-import { useAuth0 } from 'react-native-auth0';
+import {useAuth0} from 'react-native-auth0';
 
 const Home = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState();
@@ -22,9 +22,7 @@ const Home = ({navigation}) => {
       const data = await getServices();
       setServices(data);
       if (user) {
-        const token = (await getCredentials()).accessToken;
-
-        console.log(token);
+        (await getCredentials()).accessToken;
       }
     })();
   }, []);

@@ -3,21 +3,27 @@ import {Text, Image, View, Pressable} from 'react-native';
 import Button from '../../../components/Button';
 import {styles} from './styles';
 import {useAuth0} from 'react-native-auth0';
+import {getProfile} from '../../../utils/backendCalls';
+import {addTokenToAxios} from '../../../utils/request';
 
 const Splash = ({navigation}) => {
-  const {authorize, clearSession, user, error, isLoading} = useAuth0();
+  const {authorize} = useAuth0();
   const onSignup = async () => {
-    await authorize({additionalParameters: {screen_hint: 'signup'}});
+    const result = await authorize({
+      additionalParameters: {screen_hint: 'signup'},
+    });
+    addTokenToAxios(`Bearer ${result.accessToken}`);
+    await getProfile();
   };
 
   const onSignin = async () => {
     try {
-      await authorize(
-        {
-          audience: "https://hello-world.example.com",
-          scope: 'openid profile email',
-        }
-      );
+      const result = await authorize({
+        audience: 'https://hello-world.example.com',
+        scope: 'openid profile email',
+      });
+      addTokenToAxios(`Bearer ${result.accessToken}`);
+      await getProfile();
     } catch (e) {
       console.log(e);
     }

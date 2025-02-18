@@ -51,9 +51,9 @@ const Signup = ({navigation}) => {
 
       const token = await signup(values);
 
-      console.log('token :>> ', token);
+      // console.log('token :>> ', token);
     } catch (error) {
-      console.log('error :>> ', error);
+      // console.log('error :>> ', error);
     }
   };
 

@@ -9,7 +9,7 @@ const Home = () => {
     try {
       await authorize();
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -17,7 +17,7 @@ const Home = () => {
     try {
       await clearSession();
     } catch (e) {
-      console.log('Log out cancelled');
+      // console.log('Log out cancelled');
     }
   };
 

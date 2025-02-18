@@ -1,6 +1,5 @@
 import {request} from './request';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Config from 'react-native-config';
 
 export const login = async values => {
   try {
@@ -16,7 +15,7 @@ export const login = async values => {
       return response?.data?.token;
     }
   } catch (e) {
-    console.log('e login :>> ', e);
+    // console.log('e login :>> ', e);
   }
 };
 
@@ -35,14 +34,14 @@ export const signup = async values => {
       return loginResponse;
     }
   } catch (e) {
-    console.log('e signup :>> ', e);
+    // console.log('e signup :>> ', e);
   }
 };
 
 export const getProfile = async () => {
   try {
     const response = await request({
-      url: '/user/profile',
+      url: `/getCurrentUser`,
       method: 'get',
     });
 
@@ -67,7 +66,7 @@ export const updateProfile = async data => {
       return profile;
     }
   } catch (e) {
-    console.log('e profile :>> ', e);
+    // console.log('e profile :>> ', e);
   }
 };
 
@@ -82,7 +81,7 @@ export const getServices = async () => {
       return response?.data;
     }
   } catch (e) {
-    console.log('e services :>> ', e.response);
+    // console.log('e services :>> ', e.response);
   }
 };
 
@@ -102,7 +101,7 @@ export const updateService = async (id, data) => {
       return services;
     }
   } catch (e) {
-    console.log('e services :>> ', e.response);
+    // console.log('e services :>> ', e.response);
   }
 };
 
@@ -121,7 +120,7 @@ export const deleteService = async id => {
       return services;
     }
   } catch (e) {
-    console.log('e services :>> ', e.response);
+    // console.log('e services :>> ', e.response);
   }
 };
 
@@ -129,7 +128,7 @@ export const addService = async data => {
   try {
     const formData = new FormData();
     const objKeys = Object.keys(data);
-    console.log('objKeys :>> ', objKeys);
+    // console.log('objKeys :>> ', objKeys);
     objKeys.forEach(key => {
       formData.append(key, data[key]);
     });
@@ -147,24 +146,6 @@ export const addService = async data => {
       return services;
     }
   } catch (e) {
-    console.log('e add services :>> ', e.response);
+    // console.log('e add services :>> ', e.response);
   }
 };
-
-export const getToken = async (user) => {
-  try {
-    const response = await request({
-      url: `${Config.CLIENT_DOMAIN}/oauth/token`,
-      method: 'POST',
-      data: {
-        ...user,
-        client_id: Config.CLIENT_ID,
-        client_serect: Config.CLIENT_SECRET,
-      },
-    });
-
-    console.log(response.data);
-  } catch (e) {
-    console.log('e token :>> 213', e);
-  }
-}

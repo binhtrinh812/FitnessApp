@@ -23,9 +23,7 @@ const App = () => {
   }, []);
 
   return (
-    <Auth0Provider
-      domain={Config.CLIENT_DOMAIN}
-      clientId={Config.CLIENT_ID}>
+    <Auth0Provider domain={Config.CLIENT_DOMAIN} clientId={Config.CLIENT_ID}>
       <SafeAreaProvider>
         <ProfileContext.Provider value={{profile, setProfile}}>
           <ServicesContext.Provider value={{services, setServices}}>
