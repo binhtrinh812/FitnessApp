@@ -5,12 +5,14 @@ import {styles} from './styles';
 import {useAuth0} from 'react-native-auth0';
 import {createNewUser} from '../../../utils/backendCalls';
 import {addTokenToAxios} from '../../../utils/request';
+import Config from 'react-native-config';
 
 const Splash = ({navigation}) => {
   const {authorize} = useAuth0();
   const onSignup = async () => {
     const result = await authorize({
       additionalParameters: {screen_hint: 'signup'},
+      audience: Config.AUDIENCE,
       scope: 'openid profile email',
     });
 
@@ -21,7 +23,7 @@ const Splash = ({navigation}) => {
   const onSignin = async () => {
     try {
       const result = await authorize({
-        audience: 'https://hello-world.example.com',
+        audience: Config.AUDIENCE,
         scope: 'openid profile email',
       });
       addTokenToAxios(`Bearer ${result.accessToken}`);
