@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import React, {useState} from 'react';
 import Config from 'react-native-config';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Routes from './Routes';
-import {useAuth0, Auth0Provider} from 'react-native-auth0';
+import {Auth0Provider} from 'react-native-auth0';
 
 export const UserContext = React.createContext();
 export const ProfileContext = React.createContext();
@@ -12,15 +11,6 @@ export const ServicesContext = React.createContext([]);
 const App = () => {
   const [profile, setProfile] = useState();
   const [services, setServices] = useState();
-
-  useEffect(() => {
-    GoogleSignin.configure({
-      scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
-      webClientId: Config.GOOGLE_WEB_CLIENT_ID, // client ID of type WEB for your server (needed to verify user ID and offline access)
-      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-      iosClientId: Config.GOOGLE_IOS_CLIENT_ID, // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-    });
-  }, []);
 
   return (
     <Auth0Provider domain={Config.CLIENT_DOMAIN} clientId={Config.CLIENT_ID}>

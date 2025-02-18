@@ -1,7 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import Signin from './src/screens/auth/Signin';
 import Splash from './src/screens/auth/Splash';
-import Signup from './src/screens/auth/Signup';
 import Home from './src/screens/app/Home';
 import Favorites from './src/screens/app/Favorites';
 import Profile from './src/screens/app/Profile';
@@ -109,16 +107,6 @@ const Routes = () => {
             <Stack.Screen
               name="Splash"
               component={Splash}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Signin"
-              component={Signin}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Signup"
-              component={Signup}
               options={{headerShown: false}}
             />
           </>

@@ -3,7 +3,7 @@ import {Text, Image, View, Pressable} from 'react-native';
 import Button from '../../../components/Button';
 import {styles} from './styles';
 import {useAuth0} from 'react-native-auth0';
-import {getProfile} from '../../../utils/backendCalls';
+import {createNewUser} from '../../../utils/backendCalls';
 import {addTokenToAxios} from '../../../utils/request';
 
 const Splash = ({navigation}) => {
@@ -11,9 +11,11 @@ const Splash = ({navigation}) => {
   const onSignup = async () => {
     const result = await authorize({
       additionalParameters: {screen_hint: 'signup'},
+      scope: 'openid profile email',
     });
+
     addTokenToAxios(`Bearer ${result.accessToken}`);
-    await getProfile();
+    await createNewUser(result.idToken);
   };
 
   const onSignin = async () => {
@@ -23,7 +25,8 @@ const Splash = ({navigation}) => {
         scope: 'openid profile email',
       });
       addTokenToAxios(`Bearer ${result.accessToken}`);
-      await getProfile();
+
+      await createNewUser(result.idToken);
     } catch (e) {
       console.log(e);
     }

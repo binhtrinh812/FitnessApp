@@ -53,6 +53,24 @@ export const getProfile = async () => {
   }
 };
 
+export const createNewUser = async idToken => {
+  try {
+    const response = await request({
+      url: `/createNewUser`,
+      method: 'post',
+      data: {
+        idToken,
+      },
+    });
+
+    if (response) {
+      return response?.data;
+    }
+  } catch (e) {
+    console.log('e profile :>> ', e);
+  }
+};
+
 export const updateProfile = async data => {
   try {
     const response = await request({
