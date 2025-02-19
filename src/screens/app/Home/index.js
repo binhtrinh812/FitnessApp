@@ -8,17 +8,22 @@ import CategoryBox from '../../../components/CategoryBox';
 import ProductHomeItem from '../../../components/ProductHomeItem';
 import {getServices} from '../../../utils/backendCalls';
 import {ServicesContext} from '../../../../App';
+import {useAuth0} from 'react-native-auth0';
 
 const Home = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState();
   const [keyword, setKeyword] = useState();
   const [filteredProducts, setFilteredProducts] = useState(services);
   const {services, setServices} = useContext(ServicesContext);
+  const {user, getCredentials} = useAuth0();
 
   useEffect(() => {
     (async () => {
       const data = await getServices();
       setServices(data);
+      if (user) {
+        (await getCredentials()).accessToken;
+      }
     })();
   }, []);
 

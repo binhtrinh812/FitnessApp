@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "backend": "cd backend && npx nodemon server.js",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
@@ -18,6 +19,7 @@
     "axios": "^1.7.9",
     "react": "17.0.2",
     "react-native": "0.68.2",
+    "react-native-auth0": "^4.0.0",
     "react-native-config": "^1.5.5",
     "react-native-gesture-handler": "^2.4.0",
     "react-native-image-picker": "^4.8.5",

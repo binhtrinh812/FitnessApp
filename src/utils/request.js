@@ -4,7 +4,7 @@ import Config from 'react-native-config';
 export const request = ({url, method, data, headers}) => {
   return axios({
     method: method || 'get',
-    url: `${Config.API_BASE_URL}${url}`,
+    url: `${Config.BACKEND_URL}${url}`,
     data,
     headers,
   });
