@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "backend": "cd backend && nodemon server.js",
+    "backend": "cd backend && npx nodemon server.js",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
