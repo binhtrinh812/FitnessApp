@@ -11,9 +11,9 @@ const CategoryBox = ({title, image, onPress, isFirst, isSelected}) => {
       <View
         style={[
           styles.imageContainer,
-          isSelected ? {backgroundColor: colors.black} : {},
+          isSelected ? {backgroundColor: colors.darkGrey2} : {},
         ]}>
-        <Image style={styles.image} source={{uri: image}} />
+        <Image style={styles.image} source={image} />
       </View>
       <Text
         style={[

@@ -77,12 +77,12 @@ const CreateListing = ({navigation}) => {
       <Header
         showBack={true}
         onBackPress={goBack}
-        title="Create a new listing"
+        title="Thêm bài tập mới"
       />
 
       <ScrollView style={styles.container}>
         <KeyboardAvoidingView behavior="position">
-          <Text style={styles.sectionTitle}>Upload Photos</Text>
+          <Text style={styles.sectionTitle}>Thêm ảnh</Text>
 
           <View style={styles.imageRow}>
             <TouchableOpacity
@@ -111,36 +111,36 @@ const CreateListing = ({navigation}) => {
 
           <Input
             placeholder="Listing Title"
-            label="Title"
+            label="Tiêu đề"
             value={values.title}
             onChangeText={v => onChange(v, 'title')}
           />
           <Input
-            placeholder="Select the category"
-            label="Category"
+            placeholder="Danh mục bài tập"
+            label="Danh mục"
             value={values.category}
             onChangeText={v => onChange(v, 'category')}
             type="picker"
             options={categories}
           />
           <Input
-            placeholder="Enter price in USD"
-            label="Price"
-            value={values.price}
-            onChangeText={v => onChange(v, 'price')}
+            placeholder="Nhập thời lượng ..."
+            label="Thời lượng"
+            value={values.time}
+            onChangeText={v => onChange(v, 'time')}
             keyboardType="numeric"
           />
           <Input
             style={styles.textarea}
-            placeholder="Tell us more..."
-            label="Description"
+            placeholder="Chi tiết ..."
+            label="Chi tiết bài tập"
             value={values.description}
             onChangeText={v => onChange(v, 'description')}
             multiline
           />
         </KeyboardAvoidingView>
 
-        <Button onPress={onSubmit} title="Submit" style={styles.button} />
+        <Button onPress={onSubmit} title="Thêm mới" style={styles.button} />
       </ScrollView>
     </SafeAreaView>
   );

@@ -9,6 +9,7 @@ import ProductHomeItem from '../../../components/ProductHomeItem';
 import {getServices} from '../../../utils/backendCalls';
 import {ServicesContext} from '../../../../App';
 import {useAuth0} from 'react-native-auth0';
+import {products} from '../../../data/products';
 
 const Home = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState();
@@ -17,15 +18,24 @@ const Home = ({navigation}) => {
   const {services, setServices} = useContext(ServicesContext);
   const {user, getCredentials} = useAuth0();
 
+  // useEffect(() => {
+  //   (async () => {
+  //     const data = await getServices();
+  //     setServices(data);
+  //     if (user) {
+  //       (await getCredentials()).accessToken;
+  //     }
+  //   })();
+  // }, []);
+
   useEffect(() => {
-    (async () => {
-      const data = await getServices();
-      setServices(data);
-      if (user) {
-        (await getCredentials()).accessToken;
-      }
-    })();
+    setServices(products);
   }, []);
+
+    useEffect(() => {
+        console.log('🚀 Dữ liệu trong services:', services);
+    }, [services]);
+
 
   useEffect(() => {
     if (selectedCategory && !keyword) {
@@ -76,7 +86,7 @@ const Home = ({navigation}) => {
         showSearch
         onSearch={setKeyword}
         keyword={keyword}
-        title="Find All You Need"
+        title="Tìm kiếm"
       />
 
       <FlatList
@@ -93,7 +103,7 @@ const Home = ({navigation}) => {
         numColumns={2}
         data={filteredProducts}
         renderItem={renderProductItem}
-        keyExtractor={item => String(item._id)}
+        keyExtractor={item => String(item.id)}
         ListFooterComponent={<View style={{height: 200}} />}
       />
     </SafeAreaView>

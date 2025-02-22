@@ -64,12 +64,16 @@ const Tabs = () => (
             : require('./src/assets/tabs/bookmark.png');
         }
 
-        // You can return any component that you like here!
+
         return <Image style={{width: 24, height: 24}} source={icon} />;
       },
       headerShown: false,
       tabBarShowLabel: false,
-      tabBarStyle: {borderTopColor: colors.lightGrey},
+      tabBarStyle: {
+        borderTopColor: colors.lightGrey,
+        backgroundColor: '#fff',
+        height: 60,
+      },
     })}>
     <Tab.Screen name="Home" component={Home} />
     <Tab.Screen name="Favorites" component={Favorites} />
