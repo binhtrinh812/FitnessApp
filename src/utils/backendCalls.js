@@ -88,10 +88,10 @@ export const updateProfile = async data => {
   }
 };
 
-export const getServices = async () => {
+export const getAllServices = async () => {
   try {
     const response = await request({
-      url: '/services',
+      url: '/services/all',
       method: 'get',
     });
 
@@ -99,23 +99,22 @@ export const getServices = async () => {
       return response?.data;
     }
   } catch (e) {
-    // console.log('e services :>> ', e.response);
+    console.log('e services :>> ', e.response);
   }
 };
 
 export const updateService = async (id, data) => {
   try {
     const response = await request({
-      url: '/services',
-      method: 'patch',
+      url: `/services/${id}`,
+      method: 'put',
       data: {
-        servicesId: id,
         ...data,
       },
     });
 
     if (response) {
-      const services = await getServices();
+      const services = await getAllServices();
       return services;
     }
   } catch (e) {
@@ -124,17 +123,14 @@ export const updateService = async (id, data) => {
 };
 
 export const deleteService = async id => {
-  try {
+  try {    
     const response = await request({
-      url: '/services',
+      url: `/services/${id}`,
       method: 'delete',
-      data: {
-        servicesId: id,
-      },
     });
 
     if (response) {
-      const services = await getServices();
+      const services = await getAllServices();
       return services;
     }
   } catch (e) {
@@ -146,10 +142,18 @@ export const addService = async data => {
   try {
     const formData = new FormData();
     const objKeys = Object.keys(data);
-    // console.log('objKeys :>> ', objKeys);
-    objKeys.forEach(key => {
-      formData.append(key, data[key]);
-    });
+    
+    objKeys.forEach((key) => {
+      if (key === "images" && Array.isArray(data[key])) {
+        // Nếu có nhiều ảnh, thêm từng ảnh vào FormData
+        data[key].forEach((img) => {
+          formData.append("images", img);
+        });
+      } else {
+        formData.append(key, data[key]);
+      }
+    }); 
+    
     const response = await request({
       url: '/services',
       method: 'post',
@@ -157,13 +161,63 @@ export const addService = async data => {
         'Content-Type': 'multipart/form-data',
       },
       data: formData,
-    });
+    });    
 
     if (response) {
-      const services = await getServices();
+      const services = await getAllServices();
       return services;
     }
   } catch (e) {
-    // console.log('e add services :>> ', e.response);
+    console.log('e add services :>> ', e.response);
+  }
+};
+
+export const saveService = async serviceId => {
+  try {
+    const response = await request({
+      url: '/service-saved',
+      method: 'post',
+      data: {
+        serviceId,
+      },
+    });
+
+    if (response) {
+      const savedServices = await getSavedServices();
+      return savedServices;
+    }
+  } catch (e) {
+    console.log('e save service :>> ', e.response);
+  }
+};
+
+export const getSavedServices = async () => {
+  try {
+    const response = await request({
+      url: '/service-saved',
+      method: 'get',
+    });
+
+    if (response) {
+      return response?.data;
+    }
+  } catch (e) {
+    console.log('e saved services :>> ', e.response);
+  }
+};
+
+export const deleteSavedService = async serviceId => {
+  try {
+    const response = await request({
+      url: `/service-saved/${serviceId}`,
+      method: 'delete',
+    });
+
+    if (response) {
+      const savedServices = await getSavedServices();
+      return savedServices;
+    }
+  } catch (e) {
+    console.log('e delete saved service :>> ', e.response);
   }
 };

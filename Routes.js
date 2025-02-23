@@ -13,6 +13,8 @@ import {Image} from 'react-native';
 import CreateListing from './src/screens/app/CreateListing';
 import MyListings from './src/screens/app/MyListings';
 import {useAuth0} from 'react-native-auth0';
+import { addTokenToAxios } from './src/utils/request';
+import Config from 'react-native-config';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -82,13 +84,25 @@ const Tabs = () => (
 );
 
 const Routes = () => {
-  const {user} = useAuth0();
+  const {user, getCredentials} = useAuth0();
 
   const theme = {
     colors: {
       background: colors.white,
     },
   };
+
+  useEffect(() => {
+    const init = async () => {
+      const credentials = await getCredentials();            
+      
+      if (credentials) {                
+        addTokenToAxios(`Bearer ${credentials.accessToken}`);
+      }
+    };
+    init();
+  }, []);
+
 
   return (
     <NavigationContainer theme={theme}>

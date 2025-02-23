@@ -9,8 +9,9 @@ import {deleteService} from '../../../utils/backendCalls';
 const MyListings = ({navigation}) => {
   const {services, setServices} = useContext(ServicesContext);
   const {profile} = useContext(ProfileContext);
+  
   const myServices = Array.isArray(services)
-    ? services?.filter(service => service?.owner === profile?._id)
+    ? services?.filter(service => service?.userId === profile?.auth0Id)
     : [];
 
   const renderItem = ({item}) => {
