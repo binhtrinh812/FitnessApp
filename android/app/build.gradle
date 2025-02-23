@@ -8,6 +8,8 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 
 def enableSeparateBuildPerCPUArchitecture = false
 
@@ -29,7 +31,7 @@ android {
 
     defaultConfig {
         applicationId "com.fitnessapp"
-        manifestPlaceholders = [auth0Domain: "dev-dcjdxko5mjkde7lh.us.auth0.com", auth0Scheme: "com.fitnessapp.auth0"]
+        manifestPlaceholders = [auth0Domain: project.env.get("CLIENT_DOMAIN"), auth0Scheme: "com.fitnessapp.auth0"]
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -168,8 +170,6 @@ dependencies {
     }
 }
 
-
-apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 if (isNewArchitectureEnabled()) {
     configurations.all {

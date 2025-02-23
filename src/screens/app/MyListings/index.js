@@ -35,7 +35,7 @@ const MyListings = ({navigation}) => {
 
   return (
     <SafeAreaView>
-      <Header title="My Listings" showBack onBackPress={goBack} />
+      <Header title="Bài tập của tôi" showBack onBackPress={goBack} />
 
       <FlatList
         data={myServices}

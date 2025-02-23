@@ -12,6 +12,7 @@ const App = () => {
   const [profile, setProfile] = useState();
   const [services, setServices] = useState();
 
+
   return (
     <Auth0Provider domain={Config.CLIENT_DOMAIN} clientId={Config.CLIENT_ID}>
       <SafeAreaProvider>

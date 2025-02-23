@@ -24,9 +24,9 @@ const Favorites = ({navigation}) => {
     };
     const onIconPress = () => {
       Alert.alert(
-        'Are you sure you want to remove this item from your favorites?',
+        'Bạn muốn xóa bài tập khỏi mục ưa thích?',
         '',
-        [{text: 'Yes', onPress: onRemove}, {text: 'Cancel'}],
+        [{text: 'Đúng', onPress: onRemove}, {text: 'Hủy'}],
       );
     };
     return (
@@ -40,12 +40,12 @@ const Favorites = ({navigation}) => {
 
   return (
     <SafeAreaView>
-      <Header title="Favorites" />
+      <Header title="Ưu thích" />
 
       <FlatList
         ListEmptyComponent={
           <Text style={{textAlign: 'center', marginTop: 40}}>
-            You do not have any favorites yet
+            Bạn chưa có bất kỳ mục ưa thích nào!
           </Text>
         }
         data={likedServices}

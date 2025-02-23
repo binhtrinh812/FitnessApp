@@ -39,21 +39,20 @@ const Splash = ({navigation}) => {
       <Image
         resizeMode="contain"
         style={styles.image}
-        source={require('../../../assets/splash_image.png')}
+        source={require('../../../assets/screen.png')}
       />
 
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>You'll Find</Text>
-        <Text style={[styles.title, styles.innerTitle]}>All you need</Text>
-        <Text style={styles.title}>Here!</Text>
+        <Text style={styles.title}>Tập luyện cùng</Text>
+        <Text style={[styles.title, styles.innerTitle]}>Fitness App!</Text>
       </View>
 
       <View style={styles.buttonCont}>
-        <Button onPress={onSignup} title="Sign Up" />
+        <Button onPress={onSignup} title="Đăng ký" />
       </View>
 
       <Pressable onPress={onSignin} hitSlop={10}>
-        <Text style={styles.footerText}>Sign In</Text>
+        <Text style={styles.footerText}>Đăng nhập</Text>
       </Pressable>
     </View>
   );

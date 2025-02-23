@@ -42,10 +42,10 @@ const Settings = ({navigation}) => {
 
   return (
     <SafeAreaView>
-      <Header showBack onBackPress={goBack} title="Settings" />
+      <Header showBack onBackPress={goBack} title="Cài đặt" />
       <ScrollView style={styles.container}>
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Personal Information</Text>
+          <Text style={styles.sectionTitle}>Thông tin cá nhân</Text>
           <Pressable onPress={onEditPress}>
             <Image
               style={styles.icon}
@@ -54,7 +54,7 @@ const Settings = ({navigation}) => {
           </Pressable>
         </View>
         <EditableBox
-          label="Name"
+          label="Tên"
           onChangeText={v => onChange('fullName', v)}
           value={values.fullName}
           editable={editing}
@@ -69,17 +69,17 @@ const Settings = ({navigation}) => {
           <Button style={styles.button} onPress={onSave} title="Save" />
         ) : null}
 
-        <Text style={[styles.sectionTitle, {marginTop: 40}]}>Help Center</Text>
+        <Text style={[styles.sectionTitle, {marginTop: 40}]}>Trung tâm hỗ trợ</Text>
         <ListItem onPress={onItemPress} style={styles.item} title="FAQ" />
         <ListItem
           onPress={onItemPress}
           style={styles.item}
-          title="Contact Us"
+          title="Liên hệ với chúng tôi"
         />
         <ListItem
           onPress={onItemPress}
           style={styles.item}
-          title="Privacy & Terms"
+          title="Điều khoản và quyền riêng tư"
         />
       </ScrollView>
     </SafeAreaView>

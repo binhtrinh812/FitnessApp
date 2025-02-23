@@ -40,7 +40,7 @@ const Profile = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Header title="Profile" showLogout onLogout={onLogout} />
+      <Header title="Thông tin" showLogout onLogout={onLogout} />
       <View style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.name}>{profile?.fullName}</Text>
@@ -48,20 +48,20 @@ const Profile = ({navigation}) => {
 
           <ListItem
             onPress={onMyListingsPress}
-            title="My Listings"
-            subtitle={`You have ${num} listings`}
+            title="Bài tập của tôi"
+            subtitle={`Bạn có ${num} bài tập`}
           />
           <ListItem
             onPress={onSettingsPress}
-            title="Settings"
-            subtitle="Account, FAQ, Contact"
+            title="Cài đặt"
+            subtitle="Tài khoản, FAQ, Liên hệ"
           />
         </View>
 
         <Button
           onPress={onNewListingPress}
           style={{flex: 0}}
-          title="Add New Listing"
+          title="Thêm bài tập mới"
         />
       </View>
     </SafeAreaView>
