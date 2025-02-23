@@ -60,16 +60,16 @@ const CreateListing = ({navigation}) => {
     };
 
     if (img) {
-      data['image'] = {
-        uri: img?.uri,
-        name: img?.fileName,
-        type: img?.type,
-      };
+      data['images'] = images.map((img, index) => ({
+        uri: img.uri,
+        name: img.fileName || `image_${index}.jpg`,
+        type: img.type || "image/jpeg",
+      }));
     }
     const updatedServices = await addService(data);
     setServices(updatedServices);
     // setValues({});
-    navigation.navigate('MyListings');
+    // navigation.navigate('MyListings');
   };
 
   return (

@@ -1,14 +1,13 @@
 import React from 'react';
-import Config from 'react-native-config';
 import {Pressable, Text, View, Image} from 'react-native';
 import {styles} from './styles';
 
-const FavoriteItem = ({title, price, icon, image, onPress, onIconPress}) => {
+const FavoriteItem = ({title, price, icon, images, onPress, onIconPress}) => {
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <Image
         style={styles.image}
-        source={{uri: `${Config.API_BASE_URL}/${image?.path}`}}
+        source={{uri: images[0]}}
       />
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>

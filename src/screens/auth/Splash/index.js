@@ -21,11 +21,12 @@ const Splash = ({navigation}) => {
   };
 
   const onSignin = async () => {
-    try {
+    try {      
       const result = await authorize({
         audience: Config.AUDIENCE,
         scope: 'openid profile email',
       });
+      
       addTokenToAxios(`Bearer ${result.accessToken}`);
 
       await createNewUser(result.idToken);

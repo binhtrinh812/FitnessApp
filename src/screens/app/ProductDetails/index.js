@@ -3,19 +3,18 @@ import { styles } from './styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '../../../components/Button';
 import ImageCarousel from '../../../components/ImageCarousel';
-import {updateService} from '../../../utils/backendCalls';
-import {ServicesContext} from '../../../../App';
+import {saveService} from '../../../utils/backendCalls';
+import {SavedServicesContext, ServicesContext} from '../../../../App';
 import React, { useContext } from 'react';
 
 
 const ProductDetails = ({ route, navigation }) => {
   const params = route?.params || {};
-  const {services, setServices} = useContext(ServicesContext);
+  const {services} = useContext(ServicesContext);
+  const {setSavedServices} = useContext(SavedServicesContext);
   const product = services?.find(
     service => service?._id === params?.product?._id,
   );
-
-
 
     const onBackPress = () => {
         navigation.goBack();
@@ -32,8 +31,8 @@ const ProductDetails = ({ route, navigation }) => {
     };
 
     const onBookmark = async () => {
-      const data = await updateService(product?._id, {liked: true});
-      setServices(data);
+      const data = await saveService(product?._id);
+      setSavedServices(data);
     };
     
     return (

@@ -1,25 +1,31 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Alert, FlatList, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import FavoriteItem from '../../../components/FavoriteItem';
 import Header from '../../../components/Header';
-import {ServicesContext} from '../../../../App';
-import {updateService} from '../../../utils/backendCalls';
+import {deleteSavedService, getSavedServices, updateService} from '../../../utils/backendCalls';
+import { SavedServicesContext } from '../../../../App';
 
 const Favorites = ({navigation}) => {
-  const {services, setServices} = useContext(ServicesContext);
-  const likedServices = Array.isArray(services)
-    ? services?.filter(service => service?.liked)
-    : [];
+  const {savedServices, setSavedServices} = useContext(SavedServicesContext);
+  
+  useEffect(() => {
+    const fetchSavedServices = async () => {
+      const data = await getSavedServices();
+      
+      setSavedServices(data);
+    };
+    fetchSavedServices();
+  }, []);
 
   const renderItem = ({item}) => {
     const onProductPress = () => {
       navigation.navigate('ProductDetails', {product: item});
     };
     const onRemove = async () => {
-      const updatedServices = await updateService(item?._id, {liked: false});
+      const updatedServices = await deleteSavedService(item?._id);
       if (Array.isArray(updatedServices)) {
-        setServices(updatedServices);
+        setSavedServices(updatedServices);
       }
     };
     const onIconPress = () => {
@@ -48,7 +54,7 @@ const Favorites = ({navigation}) => {
             Bạn chưa có bất kỳ mục ưa thích nào!
           </Text>
         }
-        data={likedServices}
+        data={savedServices}
         renderItem={renderItem}
         keyExtractor={item => String(item?._id)}
       />

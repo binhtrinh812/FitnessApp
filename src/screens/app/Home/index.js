@@ -6,7 +6,7 @@ import Header from '../../../components/Header';
 import {categories} from '../../../data/categories';
 import CategoryBox from '../../../components/CategoryBox';
 import ProductHomeItem from '../../../components/ProductHomeItem';
-import {getServices} from '../../../utils/backendCalls';
+import {getAllServices} from '../../../utils/backendCalls';
 import {ServicesContext} from '../../../../App';
 import {useAuth0} from 'react-native-auth0';
 import {products} from '../../../data/products';
@@ -29,7 +29,12 @@ const Home = ({navigation}) => {
   // }, []);
 
   useEffect(() => {
-    setServices(products);
+    const getServicesData = async () => {
+      const data = await getAllServices();      
+      setServices(data);
+    }
+
+    getServicesData();
   }, []);
 
     useEffect(() => {

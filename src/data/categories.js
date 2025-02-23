@@ -4,27 +4,27 @@ export const categories = [
     image: require('../assets/weightlifting.png'),
   },
   {
-    id: 1,
+    id: 'Chân',
     title: 'Chân',
     image: require('../assets/fitness.png'),
   },
   {
-    id: 2,
+    id: 'Tay',
     title: 'Tay',
     image: require('../assets/muscle.png'),
   },
   {
-    id: 3,
+    id: 'Ngực',
     title: 'Ngực',
     image: require('../assets/body.png'),
   },
   {
-    id: 4,
+    id: 'Lưng',
     title: 'Lưng',
     image: require('../assets/dumbbell.png'),
   },
   {
-    id: 5,
+    id: 'Vai',
     title: 'Vai',
     image: require('../assets/weights.png'),
   },
