@@ -9,17 +9,20 @@ const {
   createNewUser,
 } = require('./controllers/userControllers.js');
 var cors = require('cors');
-const { createService, getServices,
+const {
+  createService,
+  getServices,
   getServiceById,
   updateService,
   getAllServices,
   getServicesByCategory,
-  deleteService} = require('./controllers/serviceControllers.js');
+  deleteService,
+} = require('./controllers/serviceControllers.js');
 
-  const {
-    saveService,
-    getSavedServices,
-    deleteSavedService
+const {
+  saveService,
+  getSavedServices,
+  deleteSavedService,
 } = require('./controllers/serviceSavedControllers');
 app.use(cors());
 app.use(express.json());
@@ -28,18 +31,26 @@ connectDB();
 
 app.get('/api/getCurrentUser', checkJwt, getCurrentUser);
 
-app.post(
-  '/api/createNewUser',
-  checkJwt,
-  createNewUser,
-);
+app.post('/api/createNewUser', checkJwt, createNewUser);
 
-app.post('/api/services', checkJwt, upload.array("images", 5), uploadMultipleToCloudinary, createService);
+app.post(
+  '/api/services',
+  checkJwt,
+  upload.array('images', 5),
+  uploadMultipleToCloudinary,
+  createService,
+);
 app.get('/api/services', checkJwt, getServices);
 app.get('/api/services/all', getAllServices);
 app.get('/api/services/category/:category', getServicesByCategory);
 app.get('/api/services/:id', checkJwt, getServiceById);
-app.put('/api/services/:id', checkJwt, upload.array("images", 5), uploadMultipleToCloudinary, updateService);
+app.put(
+  '/api/services/:id',
+  checkJwt,
+  upload.array('images', 5),
+  uploadMultipleToCloudinary,
+  updateService,
+);
 app.delete('/api/services/:id', checkJwt, deleteService);
 
 // CRD Routes for saved services

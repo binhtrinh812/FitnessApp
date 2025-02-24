@@ -29,7 +29,7 @@ const getSavedServices = async (req, res) => {
     const savedServices = await ServiceSaved.find({
       userId: req.auth.payload.sub,
     }).toArray();
-    const serviceIds = savedServices.map(s =>new ObjectId(s.serviceId));
+    const serviceIds = savedServices.map(s => new ObjectId(s.serviceId));
     const services = await Service.find({_id: {$in: serviceIds}}).toArray();
 
     res.status(200).json(services);
@@ -49,7 +49,7 @@ const deleteSavedService = async (req, res) => {
     if (result.deletedCount === 0) {
       return res.status(404).json({error: 'Saved service not found'});
     }
-    await ServiceSaved.deleteMany({ serviceId: req.params.id });
+    await ServiceSaved.deleteMany({serviceId: req.params.id});
     res.status(200).json({message: 'Saved service deleted successfully'});
   } catch (error) {
     res.status(500).json({error: 'Error deleting saved service'});

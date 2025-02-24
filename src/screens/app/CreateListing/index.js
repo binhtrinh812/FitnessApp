@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -9,21 +9,23 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {styles} from './styles';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { styles } from './styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../../components/Header';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
-import {categories} from '../../../data/categories';
-import {addService} from '../../../utils/backendCalls';
-import {ServicesContext} from '../../../../App';
+import { categories } from '../../../data/categories';
+import { addService } from '../../../utils/backendCalls';
+import { ServicesContext } from '../../../../App';
+import { Alert } from 'react-native';
 
-const CreateListing = ({navigation}) => {
+const CreateListing = ({ navigation }) => {
   const [images, setImages] = useState([]);
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
-  const {setServices} = useContext(ServicesContext);
+  const { setServices } = useContext(ServicesContext);
+  const [errors, setErrors] = useState({});
 
   const goBack = () => {
     navigation.goBack();
@@ -49,36 +51,73 @@ const CreateListing = ({navigation}) => {
   };
 
   const onChange = (value, key) => {
-    setValues(val => ({...val, [key]: value}));
+    setValues(val => ({ ...val, [key]: value }));
+    if (errors[key]) {
+      setErrors(prev => ({ ...prev, [key]: '' }));
+    }
+  };
+
+  const validate = () => {
+    let newErrors = {};
+  
+    if (!values.title || values.title.trim() === '') {
+      newErrors.title = 'Vui lòng nhập tiêu đề!';
+    }
+    if (!values.category) {
+      newErrors.category = 'Vui lòng chọn danh mục!';
+    }
+    if (!values.time || isNaN(values.time) || values.time <= 0) {
+      newErrors.time = 'Thời lượng phải là số và lớn hơn 0!';
+    }
+    if (!values.description || values.description.trim() === '') {
+      newErrors.description = 'Vui lòng nhập chi tiết bài tập!';
+    }
+  
+    setErrors(newErrors);
+    console.log('Errors:', newErrors);  // Thêm dòng này để debug
+    return Object.keys(newErrors).length === 0;
   };
 
   const onSubmit = async () => {
-    const img = images?.length ? images[0] : null;
-    const data = {
-      ...values,
-      category: values.category?.id,
-    };
-
-    if (img) {
-      data['images'] = images.map((img, index) => ({
-        uri: img.uri,
-        name: img.fileName || `image_${index}.jpg`,
-        type: img.type || "image/jpeg",
-      }));
+    if (!validate()) {
+      console.log("Validation failed", errors);
+      return;
     }
-    const updatedServices = await addService(data);
-    setServices(updatedServices);
-    // setValues({});
-    // navigation.navigate('MyListings');
+  
+    console.log("Submit pressed", values);  // Thêm dòng này để kiểm tra
+  
+    try {
+      const img = images?.length ? images[0] : null;
+      const data = {
+        ...values,
+        category: values.category?.id,
+      };
+  
+      if (img) {
+        data['images'] = images.map((img, index) => ({
+          uri: img.uri,
+          name: img.fileName || `image_${index}.jpg`,
+          type: img.type || 'image/jpeg',
+        }));
+      }
+  
+      console.log("Sending data:", data);  // Kiểm tra dữ liệu trước khi gửi
+  
+      const updatedServices = await addService(data);
+      setServices(updatedServices);
+  
+      Alert.alert('Thành công', 'Bài tập đã được thêm mới!', [
+        { text: 'OK', onPress: () => navigation.navigate('MyListings') }
+      ]);
+    } catch (error) {
+      console.error('Lỗi khi thêm bài tập:', error);
+      Alert.alert('Lỗi', 'Có lỗi xảy ra khi thêm bài tập, vui lòng thử lại!');
+    }
   };
 
   return (
     <SafeAreaView>
-      <Header
-        showBack={true}
-        onBackPress={goBack}
-        title="Thêm bài tập mới"
-      />
+      <Header showBack={true} onBackPress={goBack} title="Thêm bài tập mới" />
 
       <ScrollView style={styles.container}>
         <KeyboardAvoidingView behavior="position">
@@ -96,7 +135,7 @@ const CreateListing = ({navigation}) => {
 
             {images?.map(image => (
               <View style={styles.imageCont} key={image?.fileName}>
-                <Image style={styles.image} source={{uri: image?.uri}} />
+                <Image style={styles.image} source={{ uri: image?.uri }} />
                 <Pressable hitSlop={20} onPress={() => onDeleteImage(image)}>
                   <Image
                     style={styles.delete}
@@ -109,13 +148,16 @@ const CreateListing = ({navigation}) => {
             {loading ? <ActivityIndicator /> : null}
           </View>
 
-          <Input
-            placeholder="Listing Title"
-            label="Tiêu đề"
-            value={values.title}
-            onChangeText={v => onChange(v, 'title')}
-          />
-          <Input
+          <Text style={styles.label}>
+  Tiêu đề {errors.title && <Text style={styles.errorText}>({errors.title})</Text>}
+</Text>
+<Input
+  placeholder="Tiêu đề ..."
+  value={values.title}
+  onChangeText={v => onChange(v, 'title')}
+/>
+
+<Input
             placeholder="Danh mục bài tập"
             label="Danh mục"
             value={values.category}
@@ -123,21 +165,29 @@ const CreateListing = ({navigation}) => {
             type="picker"
             options={categories}
           />
-          <Input
-            placeholder="Nhập thời lượng ..."
-            label="Thời lượng"
-            value={values.time}
-            onChangeText={v => onChange(v, 'time')}
-            keyboardType="numeric"
-          />
-          <Input
-            style={styles.textarea}
-            placeholder="Chi tiết ..."
-            label="Chi tiết bài tập"
-            value={values.description}
-            onChangeText={v => onChange(v, 'description')}
-            multiline
-          />
+
+<Text style={styles.label}>
+  Thời lượng {errors.time && <Text style={styles.errorText}>({errors.time})</Text>}
+</Text>
+
+<Input
+  placeholder="Nhập thời lượng ..."
+  value={values.time}
+  onChangeText={v => onChange(v, 'time')}
+  keyboardType="numeric"
+/>
+
+<Text style={styles.label}>
+  Chi tiết bài tập {errors.description && <Text style={styles.errorText}>({errors.description})</Text>}
+</Text>
+<Input
+  style={styles.textarea}
+  placeholder="Chi tiết ..."
+  value={values.description}
+  onChangeText={v => onChange(v, 'description')}
+  multiline
+/>
+
         </KeyboardAvoidingView>
 
         <Button onPress={onSubmit} title="Thêm mới" style={styles.button} />

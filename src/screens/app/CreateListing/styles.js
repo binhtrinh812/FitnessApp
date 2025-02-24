@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {colors} from '../../../utils/colors';
+import { StyleSheet } from 'react-native';
+import { colors } from '../../../utils/colors';
 
 export const styles = StyleSheet.create({
   container: {
@@ -10,6 +10,17 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.blue,
     marginBottom: 16,
+  },
+  imageRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    paddingBottom: 16,
+  },
+  imageCont: {
+    flexDirection: 'row',
+    marginTop: 8,
+    marginRight: 8,
   },
   image: {
     width: 100,
@@ -23,7 +34,6 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.grey,
     borderStyle: 'dotted',
-    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8,
@@ -32,9 +42,8 @@ export const styles = StyleSheet.create({
   uploadCircle: {
     width: 32,
     height: 32,
-    borderRadius: 20,
+    borderRadius: 16,
     backgroundColor: colors.lightGrey,
-    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -42,17 +51,6 @@ export const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 28,
     marginTop: -4,
-  },
-  imageRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    paddingBottom: 16,
-  },
-  imageCont: {
-    flexDirection: 'row',
-    marginTop: 8,
-    marginRight: 8,
   },
   delete: {
     width: 24,
@@ -66,5 +64,33 @@ export const styles = StyleSheet.create({
   },
   button: {
     marginBottom: 160,
+  },
+  inputLabel: {
+    fontWeight: 'bold',
+    marginRight: 5,
+  },
+  errorText: {
+    color: 'red',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  label: {
+    fontWeight: 'bold',
+    marginRight: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  errorText: {
+    color: 'red',
+    fontWeight: '400',
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 15,
   },
 });

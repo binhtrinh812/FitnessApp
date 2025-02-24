@@ -62,4 +62,37 @@ export const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  alertBox: {
+    width: 300,
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  alertTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  alertMessage: {
+    fontSize: 16,
+    textAlign: 'center',
+    padding: 10,
+    lineHeight: 30,
+  },
+  alertButton: {
+    backgroundColor: '#007bff',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  alertButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },
 });
