@@ -5,10 +5,7 @@ import {styles} from './styles';
 const FavoriteItem = ({title, price, icon, images, onPress, onIconPress}) => {
   return (
     <Pressable onPress={onPress} style={styles.container}>
-      <Image
-        style={styles.image}
-        source={{uri: images[0]}}
-      />
+      <Image style={styles.image} source={{uri: images[0]}} />
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.price}>{price}</Text>

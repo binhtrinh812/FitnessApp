@@ -13,8 +13,10 @@ import {Image} from 'react-native';
 import CreateListing from './src/screens/app/CreateListing';
 import MyListings from './src/screens/app/MyListings';
 import {useAuth0} from 'react-native-auth0';
-import { addTokenToAxios } from './src/utils/request';
+import {addTokenToAxios} from './src/utils/request';
 import Config from 'react-native-config';
+import Toast from 'react-native-toast-message';
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -66,7 +68,6 @@ const Tabs = () => (
             : require('./src/assets/tabs/bookmark.png');
         }
 
-
         return <Image style={{width: 24, height: 24}} source={icon} />;
       },
       headerShown: false,
@@ -94,15 +95,46 @@ const Routes = () => {
 
   useEffect(() => {
     const init = async () => {
-      const credentials = await getCredentials();            
-      
-      if (credentials) {                
+      const credentials = await getCredentials();
+
+      if (credentials) {
         addTokenToAxios(`Bearer ${credentials.accessToken}`);
       }
     };
     init();
   }, []);
 
+  useEffect(() => {
+    if (user) {
+      Toast.show({
+        type: 'success',
+        text1: 'Đăng nhập thành công!',
+        text2: `Chào mừng ${user.name}.`,
+        visibilityTime: 4000,
+        autoHide: true,
+        position: 'top',
+        topOffset: 40, 
+        text1Style: {
+          fontSize: 18,
+          fontWeight: 'bold',
+          color: '#000',
+          textAlign: 'center',
+          paddingTop: 10,
+        },
+        text2Style: {
+          fontSize: 16,
+          color: '#000',
+          paddingBottom: 10,
+          textAlign: 'center',
+        },
+        style: {
+          borderRadius: 10,
+          padding: 15,
+        },
+      });
+    }
+  }, [user]);
+  
 
   return (
     <NavigationContainer theme={theme}>

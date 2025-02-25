@@ -123,7 +123,7 @@ export const updateService = async (id, data) => {
 };
 
 export const deleteService = async id => {
-  try {    
+  try {
     const response = await request({
       url: `/services/${id}`,
       method: 'delete',
@@ -142,18 +142,18 @@ export const addService = async data => {
   try {
     const formData = new FormData();
     const objKeys = Object.keys(data);
-    
-    objKeys.forEach((key) => {
-      if (key === "images" && Array.isArray(data[key])) {
+
+    objKeys.forEach(key => {
+      if (key === 'images' && Array.isArray(data[key])) {
         // Nếu có nhiều ảnh, thêm từng ảnh vào FormData
-        data[key].forEach((img) => {
-          formData.append("images", img);
+        data[key].forEach(img => {
+          formData.append('images', img);
         });
       } else {
         formData.append(key, data[key]);
       }
-    }); 
-    
+    });
+
     const response = await request({
       url: '/services',
       method: 'post',
@@ -161,7 +161,7 @@ export const addService = async data => {
         'Content-Type': 'multipart/form-data',
       },
       data: formData,
-    });    
+    });
 
     if (response) {
       const services = await getAllServices();

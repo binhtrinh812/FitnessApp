@@ -9,7 +9,6 @@ import ProductHomeItem from '../../../components/ProductHomeItem';
 import {getAllServices} from '../../../utils/backendCalls';
 import {ServicesContext} from '../../../../App';
 import {useAuth0} from 'react-native-auth0';
-import {products} from '../../../data/products';
 
 const Home = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState();
@@ -18,29 +17,18 @@ const Home = ({navigation}) => {
   const {services, setServices} = useContext(ServicesContext);
   const {user, getCredentials} = useAuth0();
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const data = await getServices();
-  //     setServices(data);
-  //     if (user) {
-  //       (await getCredentials()).accessToken;
-  //     }
-  //   })();
-  // }, []);
-
   useEffect(() => {
     const getServicesData = async () => {
-      const data = await getAllServices();      
+      const data = await getAllServices();
       setServices(data);
-    }
+    };
 
     getServicesData();
   }, []);
 
-    useEffect(() => {
-        console.log('🚀 Dữ liệu trong services:', services);
-    }, [services]);
-
+  useEffect(() => {
+    console.log('🚀 Dữ liệu trong services:', services);
+  }, [services]);
 
   useEffect(() => {
     if (selectedCategory && !keyword) {

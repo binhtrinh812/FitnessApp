@@ -1,17 +1,17 @@
-import React, {useContext, useState} from 'react';
-import {Image, Linking, Pressable, ScrollView, Text, View} from 'react-native';
-import {styles} from './styles';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import React, { useContext, useState } from 'react';
+import { Image, Linking, Pressable, ScrollView, Text, View } from 'react-native';
+import { styles } from './styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../../components/Header';
 import ListItem from '../../../components/ListItem';
 import EditableBox from '../../../components/EditableBox';
 import Button from '../../../components/Button';
-import {ProfileContext} from '../../../../App';
-import {updateProfile} from '../../../utils/backendCalls';
+import { ProfileContext } from '../../../../App';
+import { updateProfile } from '../../../utils/backendCalls';
 
-const Settings = ({navigation}) => {
+const Settings = ({ navigation }) => {
   const [editing, setEditing] = useState(false);
-  const {profile, setProfile} = useContext(ProfileContext);
+  const { profile, setProfile } = useContext(ProfileContext);
   const [values, setValues] = useState({
     _id: profile?._id,
     fullName: profile?.fullName,
@@ -29,7 +29,7 @@ const Settings = ({navigation}) => {
   };
 
   const onChange = (key, value) => {
-    setValues(v => ({...v, [key]: value}));
+    setValues(v => ({ ...v, [key]: value }));
   };
 
   const onItemPress = () => {
@@ -63,13 +63,15 @@ const Settings = ({navigation}) => {
           label="Email"
           onChangeText={v => onChange('email', v)}
           value={values.email}
-          editable={editing}
+          editable={false}
         />
         {editing ? (
           <Button style={styles.button} onPress={onSave} title="Save" />
         ) : null}
 
-        <Text style={[styles.sectionTitle, {marginTop: 40}]}>Trung tâm hỗ trợ</Text>
+        <Text style={[styles.sectionTitle, { marginTop: 40 }]}>
+          Trung tâm hỗ trợ
+        </Text>
         <ListItem onPress={onItemPress} style={styles.item} title="FAQ" />
         <ListItem
           onPress={onItemPress}

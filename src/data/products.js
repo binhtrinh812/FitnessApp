@@ -15,7 +15,8 @@ export const products = [
     image:
       'https://www.woods-furniture.co.uk/images/products/standard/7706_8118.jpg',
     category: 2,
-    time: '20 phút',    description:
+    time: '20 phút',
+    description:
       'Minimal Stand is made of by natural wood. The design that is very simple and minimal. This is truly one of the best furnitures in any family for now. With 3 different colors, you can easily select the best match for your home. ',
   },
   {
@@ -24,7 +25,8 @@ export const products = [
     image:
       'https://www.woods-furniture.co.uk/images/products/standard/7706_8118.jpg',
     category: 3,
-    time: '20 phút',    description:
+    time: '20 phút',
+    description:
       'Minimal Stand is made of by natural wood. The design that is very simple and minimal. This is truly one of the best furnitures in any family for now. With 3 different colors, you can easily select the best match for your home. ',
   },
   {

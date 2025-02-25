@@ -3,18 +3,22 @@ import {Alert, FlatList, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import FavoriteItem from '../../../components/FavoriteItem';
 import Header from '../../../components/Header';
-import {deleteSavedService, getSavedServices, updateService} from '../../../utils/backendCalls';
-import { SavedServicesContext } from '../../../../App';
+import {
+  deleteSavedService,
+  getSavedServices,
+  updateService,
+} from '../../../utils/backendCalls';
+import {SavedServicesContext} from '../../../../App';
 
 const Favorites = ({navigation}) => {
   const {savedServices, setSavedServices} = useContext(SavedServicesContext);
-  
+
   useEffect(() => {
     const fetchSavedServices = async () => {
       const data = await getSavedServices();
-      
       setSavedServices(data);
     };
+  
     fetchSavedServices();
   }, []);
 
@@ -22,19 +26,21 @@ const Favorites = ({navigation}) => {
     const onProductPress = () => {
       navigation.navigate('ProductDetails', {product: item});
     };
+  
     const onRemove = async () => {
       const updatedServices = await deleteSavedService(item?._id);
       if (Array.isArray(updatedServices)) {
         setSavedServices(updatedServices);
       }
     };
+  
     const onIconPress = () => {
-      Alert.alert(
-        'Bạn muốn xóa bài tập khỏi mục ưa thích?',
-        '',
-        [{text: 'Đúng', onPress: onRemove}, {text: 'Hủy'}],
-      );
+      Alert.alert('Bạn muốn xóa bài tập khỏi mục ưa thích?', '', [
+        {text: 'Đúng', onPress: onRemove},
+        {text: 'Hủy'},
+      ]);
     };
+  
     return (
       <FavoriteItem
         onPress={onProductPress}
@@ -56,7 +62,8 @@ const Favorites = ({navigation}) => {
         }
         data={savedServices}
         renderItem={renderItem}
-        keyExtractor={item => String(item?._id)}
+        keyExtractor={item => String(item._id)}
+        extraData={savedServices}
       />
     </SafeAreaView>
   );
