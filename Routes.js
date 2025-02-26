@@ -103,12 +103,12 @@ const Routes = () => {
     const init = async () => {
       const credentials = await getCredentials();
 
-      if (credentials) {
+      if (credentials) {        
         addTokenToAxios(`Bearer ${credentials.accessToken}`);
       }
     };
     init();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (user) {

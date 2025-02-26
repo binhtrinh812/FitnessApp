@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {request} from './request';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -105,20 +106,33 @@ export const getAllServices = async () => {
 
 export const updateService = async (id, data) => {
   try {
+    const formData = new FormData();
+    const objKeys = Object.keys(data);
+
+    objKeys.forEach(key => {
+      if (key === 'images' && Array.isArray(data[key])) {
+        // Nếu có nhiều ảnh, thêm từng ảnh vào FormData
+        data[key].forEach(img => {
+          formData.append('images', img);
+        });
+      } else {
+        formData.append(key, data[key]);
+      }
+    });    
+
     const response = await request({
       url: `/services/${id}`,
       method: 'put',
       data: {
         ...data,
       },
-    });
+    });    
 
     if (response) {
-      const services = await getAllServices();
-      return services;
+      return await getData();
     }
   } catch (e) {
-    // console.log('e services :>> ', e.response);
+    console.log('e services :>> ', e.response);
   }
 };
 
@@ -130,8 +144,7 @@ export const deleteService = async id => {
     });
 
     if (response) {
-      const services = await getAllServices();
-      return services;
+      return await getData();
     }
   } catch (e) {
     // console.log('e services :>> ', e.response);
@@ -164,8 +177,7 @@ export const addService = async data => {
     });
 
     if (response) {
-      const services = await getAllServices();
-      return services;
+      return await getData();
     }
   } catch (e) {
     console.log('e add services :>> ', e.response);
@@ -220,4 +232,11 @@ export const deleteSavedService = async serviceId => {
   } catch (e) {
     console.log('e delete saved service :>> ', e.response);
   }
+};
+
+export const getData = async () => {
+  const services = await getAllServices();
+  const savedServices = await getSavedServices();
+  
+  return {services, savedServices};
 };

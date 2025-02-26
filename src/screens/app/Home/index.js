@@ -6,25 +6,31 @@ import Header from '../../../components/Header';
 import {categories} from '../../../data/categories';
 import CategoryBox from '../../../components/CategoryBox';
 import ProductHomeItem from '../../../components/ProductHomeItem';
-import {getAllServices} from '../../../utils/backendCalls';
-import {ServicesContext} from '../../../../App';
+import {getAllServices, getData, getSavedServices} from '../../../utils/backendCalls';
+import {SavedServicesContext, ServicesContext} from '../../../../App';
 import {useAuth0} from 'react-native-auth0';
+import { addTokenToAxios } from '../../../utils/request';
 
 const Home = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState();
   const [keyword, setKeyword] = useState();
   const [filteredProducts, setFilteredProducts] = useState(services);
   const {services, setServices} = useContext(ServicesContext);
+  const {setSavedServices} = useContext(SavedServicesContext);
   const {user, getCredentials} = useAuth0();
 
   useEffect(() => {
-    const getServicesData = async () => {
-      const data = await getAllServices();
-      setServices(data);
+    const fetchData = async () => {
+      const token = await getCredentials();
+      addTokenToAxios(token);
+      const data = await getData();
+      
+      setServices(data.services);
+      setSavedServices(data.savedServices);
     };
 
-    getServicesData();
-  }, []);
+    fetchData();
+  }, [user]);
 
   useEffect(() => {
     console.log('🚀 Dữ liệu trong services:', services);
@@ -44,6 +50,8 @@ const Home = ({navigation}) => {
       );
       setFilteredProducts(updatedProducts);
     } else if (!selectedCategory && keyword) {
+      console.log(keyword);
+      
       const updatedProducts = services.filter(product =>
         product?.title?.toLowerCase().includes(keyword?.toLowerCase()),
       );

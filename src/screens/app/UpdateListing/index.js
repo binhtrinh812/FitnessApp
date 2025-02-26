@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -17,12 +17,30 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { categories } from '../../../data/categories';
+import { updateService } from '../../../utils/backendCalls';
+import { SavedServicesContext, ServicesContext } from '../../../../App';
 
-const UpdateListing = ({ navigation }) => {
+const UpdateListing = ({ route, navigation }) => {
+  const params = route?.params || {};
+  const product = params?.product || {};
   const [images, setImages] = useState([]);
-  const [values, setValues] = useState({});
+  const {setServices} = useContext(ServicesContext);
+  const {setSavedServices} = useContext(SavedServicesContext);
+  const [imageUrls, setImageUrls] = useState(product?.images || []);
+  const [values, setValues] = useState({
+    title: product?.title || '',
+    category: categories.find(c => c.id === product?.category)|| {
+      title: 'Tất cả',
+      image: require('../../../assets/weightlifting.png'),
+    },
+    time: product?.time || '',
+    description: product?.description || ''
+  }
+  );
+  
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  
 
   const goBack = () => {
     navigation.goBack();
@@ -42,7 +60,11 @@ const UpdateListing = ({ navigation }) => {
     setImages(list => list.filter(img => img?.fileName !== image?.fileName));
   };
 
-  const onChange = (value, key) => {
+  const onDeleteImageUrls = url => {
+    setImageUrls(list => list.filter(img => img !== url));
+  };
+
+  const onChange = (value, key) => {    
     setValues(val => ({ ...val, [key]: value }));
     if (errors[key]) {
       setErrors(prev => ({ ...prev, [key]: '' }));
@@ -64,7 +86,7 @@ const UpdateListing = ({ navigation }) => {
     if (!values.description || values.description.trim() === '') {
       newErrors.description = 'Vui lòng nhập chi tiết bài tập!';
     }
-    if (images.length === 0) {
+    if (images.length === 0 && imageUrls.length === 0) {
       newErrors.images = 'Vui lòng thêm ít nhất một ảnh!';
     }
 
@@ -72,9 +94,31 @@ const UpdateListing = ({ navigation }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (!validate()) {
       return;
+    }
+
+    const data = {
+      ...values,
+      category: values.category?.id,
+      imageUrls
+    };
+
+    try {
+      if (images?.length > 0) {
+        data['images'] = images.map((img, index) => ({
+          uri: img.uri,
+          name: img.fileName || `image_${index}.jpg`,
+          type: img.type || 'image/jpeg',
+        }));
+      }
+
+      const result = await updateService(product?._id, data);
+      setServices(result.services);
+      setSavedServices(result.savedServices);
+    } catch (error) {
+      console.log('Error:', error);
     }
 
     Alert.alert('Thành công', 'Bài tập đã được cập nhật!', [
@@ -111,6 +155,19 @@ const UpdateListing = ({ navigation }) => {
                 </Pressable>
               </View>
             ))}
+            {
+              imageUrls.map((url, index) => (
+                <View style={styles.imageCont} key={index}>
+                  <Image style={styles.image} source={{ uri: url }} />
+                  <Pressable hitSlop={20} onPress={() => onDeleteImageUrls(url)}>
+                    <Image
+                      style={styles.delete}
+                      source={require('../../../assets/close.png')}
+                    />
+                  </Pressable>
+                </View>
+              ))
+            }
 
             {loading ? <ActivityIndicator /> : null}
             {errors.images && <Text style={styles.errorText}>({errors.images})</Text>}
