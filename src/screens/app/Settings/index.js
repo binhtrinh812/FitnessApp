@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Image, Linking, Pressable, ScrollView, Text, View } from 'react-native';
+import { Image, Linking, Pressable, ScrollView, Text, View, Alert } from 'react-native';
 import { styles } from './styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../../components/Header';
@@ -22,10 +22,22 @@ const Settings = ({ navigation }) => {
     setEditing(true);
   };
 
-  const onSave = async () => {
-    const updatedProfile = await updateProfile(values);
-    setProfile(updatedProfile);
-    setEditing(false);
+  const onConfirmSave = () => {
+    Alert.alert(
+      'Xác nhận lưu',
+      'Bạn có chắc chắn muốn lưu thông tin đã chỉnh sửa không?',
+      [
+        { text: 'Hủy', style: 'cancel' },
+        {
+          text: 'Lưu',
+          onPress: async () => {
+            const updatedProfile = await updateProfile(values);
+            setProfile(updatedProfile);
+            setEditing(false);
+          },
+        },
+      ]
+    );
   };
 
   const onChange = (key, value) => {
@@ -66,7 +78,7 @@ const Settings = ({ navigation }) => {
           editable={false}
         />
         {editing ? (
-          <Button style={styles.button} onPress={onSave} title="Save" />
+          <Button style={styles.button} onPress={onConfirmSave} title="Lưu thông tin" />
         ) : null}
 
         <Text style={[styles.sectionTitle, { marginTop: 40 }]}>

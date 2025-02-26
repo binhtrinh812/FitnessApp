@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FavoriteItem from '../../../components/FavoriteItem';
 import Header from '../../../components/Header';
@@ -14,19 +14,29 @@ const MyListings = ({ navigation }) => {
     ? services?.filter(service => service?.userId === profile?.auth0Id)
     : [];
 
-
-  const onProductPress = () => {
-    navigation.navigate('ProductDetails', { product: item, isMyListing: true });
-  };
-
   const renderItem = ({ item }) => {
     const onProductPress = () => {
       navigation.navigate('ProductDetails', { product: item, isMyListing: true });
     };
+
     const onRemove = async () => {
-      const updatedServices = await deleteService(item?._id);
-      setServices(updatedServices);
+      Alert.alert(
+        'Xác nhận xóa',
+        'Bạn có chắc chắn muốn xóa bài tập này không?',
+        [
+          { text: 'Hủy', style: 'cancel' },
+          {
+            text: 'Xóa',
+            style: 'destructive',
+            onPress: async () => {
+              const updatedServices = await deleteService(item?._id);
+              setServices(updatedServices);
+            },
+          },
+        ]
+      );
     };
+
     return (
       <FavoriteItem
         onIconPress={onRemove}

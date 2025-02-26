@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -7,7 +7,8 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  View, Alert
+  View,
+  Alert
 } from 'react-native';
 import { styles } from './styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -16,14 +17,11 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { categories } from '../../../data/categories';
-import { addService } from '../../../utils/backendCalls';
-import { ServicesContext } from '../../../../App';
 
-const CreateListing = ({ navigation }) => {
+const UpdateListing = ({ navigation }) => {
   const [images, setImages] = useState([]);
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
-  const { setServices } = useContext(ServicesContext);
   const [errors, setErrors] = useState({});
 
   const goBack = () => {
@@ -41,12 +39,7 @@ const CreateListing = ({ navigation }) => {
   };
 
   const onDeleteImage = image => {
-    setImages(list => {
-      const filteredImages = list.filter(
-        img => img?.fileName !== image?.fileName,
-      );
-      return filteredImages;
-    });
+    setImages(list => list.filter(img => img?.fileName !== image?.fileName));
   };
 
   const onChange = (value, key) => {
@@ -76,54 +69,26 @@ const CreateListing = ({ navigation }) => {
     }
 
     setErrors(newErrors);
-    console.log('Errors:', newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     if (!validate()) {
-      console.log("Validation failed", errors);
       return;
     }
 
-    console.log("Submit pressed", values);
-
-    try {
-      const img = images?.length ? images[0] : null;
-      const data = {
-        ...values,
-        category: values.category?.id,
-      };
-
-      if (img) {
-        data['images'] = images.map((img, index) => ({
-          uri: img.uri,
-          name: img.fileName || `image_${index}.jpg`,
-          type: img.type || 'image/jpeg',
-        }));
-      }
-
-      console.log("Sending data:", data);
-
-      const updatedServices = await addService(data);
-      setServices(updatedServices);
-
-      Alert.alert('Thành công', 'Bài tập đã được thêm mới!', [
-        { text: 'OK', onPress: () => navigation.navigate('MyListings') }
-      ]);
-    } catch (error) {
-      console.error('Lỗi khi thêm bài tập:', error);
-      Alert.alert('Lỗi', 'Có lỗi xảy ra khi thêm bài tập, vui lòng thử lại!');
-    }
+    Alert.alert('Thành công', 'Bài tập đã được cập nhật!', [
+      { text: 'OK', onPress: () => navigation.goBack() }
+    ]);
   };
 
   return (
     <SafeAreaView>
-      <Header showBack={true} onBackPress={goBack} title="Thêm bài tập mới" />
+      <Header showBack={true} onBackPress={goBack} title="Cập nhật bài tập" />
 
       <ScrollView style={styles.container}>
         <KeyboardAvoidingView behavior="position">
-          <Text style={styles.sectionTitle}>Thêm ảnh</Text>
+          <Text style={styles.sectionTitle}>Cập nhật ảnh</Text>
 
           <View style={styles.imageRow}>
             <TouchableOpacity
@@ -151,54 +116,23 @@ const CreateListing = ({ navigation }) => {
             {errors.images && <Text style={styles.errorText}>({errors.images})</Text>}
           </View>
 
-          <Text style={styles.label}>
-            Tiêu đề {errors.title && <Text style={styles.errorText}>({errors.title})</Text>}
-          </Text>
-          <Input
-            placeholder="Tiêu đề ..."
-            value={values.title}
-            onChangeText={v => onChange(v, 'title')}
-          />
+          <Text style={styles.label}>Tiêu đề {errors.title && <Text style={styles.errorText}>({errors.title})</Text>}</Text>
+          <Input placeholder="Tiêu đề ..." value={values.title} onChangeText={v => onChange(v, 'title')} />
 
-          <Text style={styles.label}>
-            Danh mục {errors.category && <Text style={styles.errorText}>({errors.category})</Text>}
-          </Text>
-          <Input
-            placeholder="Danh mục bài tập"
-            value={values.category}
-            onChangeText={v => onChange(v, 'category')}
-            type="picker"
-            options={categories}
-          />
+          <Text style={styles.label}>Danh mục {errors.category && <Text style={styles.errorText}>({errors.category})</Text>}</Text>
+          <Input placeholder="Danh mục bài tập" value={values.category} onChangeText={v => onChange(v, 'category')} type="picker" options={categories} />
 
-          <Text style={styles.label}>
-            Thời lượng {errors.time && <Text style={styles.errorText}>({errors.time})</Text>}
-          </Text>
+          <Text style={styles.label}>Thời lượng {errors.time && <Text style={styles.errorText}>({errors.time})</Text>}</Text>
+          <Input placeholder="Nhập thời lượng ..." value={values.time} onChangeText={v => onChange(v, 'time')} keyboardType="numeric" />
 
-          <Input
-            placeholder="Nhập thời lượng ..."
-            value={values.time}
-            onChangeText={v => onChange(v, 'time')}
-            keyboardType="numeric"
-          />
-
-          <Text style={styles.label}>
-            Chi tiết bài tập {errors.description && <Text style={styles.errorText}>({errors.description})</Text>}
-          </Text>
-          <Input
-            style={styles.textarea}
-            placeholder="Chi tiết ..."
-            value={values.description}
-            onChangeText={v => onChange(v, 'description')}
-            multiline
-          />
-
+          <Text style={styles.label}>Chi tiết bài tập {errors.description && <Text style={styles.errorText}>({errors.description})</Text>}</Text>
+          <Input style={styles.textarea} placeholder="Chi tiết ..." value={values.description} onChangeText={v => onChange(v, 'description')} multiline />
         </KeyboardAvoidingView>
 
-        <Button onPress={onSubmit} title="Thêm mới" style={styles.button} />
+        <Button onPress={onSubmit} title="Cập nhật" style={styles.button} />
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default React.memo(CreateListing);
+export default React.memo(UpdateListing);

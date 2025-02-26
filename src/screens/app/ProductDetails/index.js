@@ -80,7 +80,7 @@ const ProductDetails = ({ route, navigation }) => {
 
       <View style={styles.footer}>
         {isMyListing ? (
-          <Pressable onPress={() => console.log('Chỉnh sửa bài tập')} style={styles.bookmarkContainer}>
+          <Pressable onPress={() => navigation.navigate('UpdateListing', { product })} style={styles.bookmarkContainer}>
             <Image style={styles.bookmarkIcon} source={require('../../../assets/edit.png')} />
           </Pressable>
         ) : (
