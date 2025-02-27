@@ -18,7 +18,7 @@ const ProductDetails = ({ route, navigation }) => {
     service => service?._id === params?.product?._id,
   );
 
-  const isSaved = Array.isArray(savedServices) && savedServices.some(item => item._id === product?._id);
+  const isSaved = Array.isArray(savedServices) && savedServices.some(item => item._id === product?._id);  
 
   const onBackPress = () => {
     navigation.goBack();

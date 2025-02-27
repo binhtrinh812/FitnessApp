@@ -5,7 +5,7 @@ const createService = async (req, res) => {
   try {
     const resultInsert = await Service.insertOne({
       ...req.body,
-      images: req.imageUrls,
+      images: req.imageUrls || [],
       userId: req.auth.payload.sub,
     });
     if (!resultInsert.acknowledged) {
@@ -66,17 +66,19 @@ const getServicesByCategory = async (req, res) => {
 
 const updateService = async (req, res) => {
   try {
+    const imagesUrls = req.imageUrls ? req.imageUrls.push(req.body.imageUrls) : req.body.imageUrls;
+    
     const updatedService = await Service.findOneAndUpdate(
       {_id: new ObjectId(req.params.id), userId: req.auth.payload.sub},
-      {$set: {...req.body, images: req.imageUrls || []}},
+      {$set: {...req.body, images: imagesUrls}},
       {returnDocument: 'after'},
     );
     if (!updatedService) {
       return res.status(404).json({error: 'Service not found'});
     }
-    res.status(200).json(updatedService);
+    return res.status(200).json(updatedService);
   } catch (error) {
-    res.status(500).json({error: 'Error updating service'});
+    return res.status(500).json({error: 'Error updating service'});
   }
 };
 

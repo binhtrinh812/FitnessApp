@@ -17,13 +17,14 @@ import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { categories } from '../../../data/categories';
 import { addService } from '../../../utils/backendCalls';
-import { ServicesContext } from '../../../../App';
+import { SavedServicesContext, ServicesContext } from '../../../../App';
 
 const CreateListing = ({ navigation }) => {
   const [images, setImages] = useState([]);
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
   const { setServices } = useContext(ServicesContext);
+  const {setSavedServices} = useContext(SavedServicesContext);
   const [errors, setErrors] = useState({});
 
   const goBack = () => {
@@ -86,8 +87,6 @@ const CreateListing = ({ navigation }) => {
       return;
     }
 
-    console.log("Submit pressed", values);
-
     try {
       const img = images?.length ? images[0] : null;
       const data = {
@@ -103,10 +102,9 @@ const CreateListing = ({ navigation }) => {
         }));
       }
 
-      console.log("Sending data:", data);
-
-      const updatedServices = await addService(data);
-      setServices(updatedServices);
+      const result = await addService(data);
+      setServices(result.services);
+      setSavedServices(result.savedServices);
 
       Alert.alert('Thành công', 'Bài tập đã được thêm mới!', [
         { text: 'OK', onPress: () => navigation.navigate('MyListings') }

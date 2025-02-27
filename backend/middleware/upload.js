@@ -16,9 +16,7 @@ const upload = multer({storage});
 const uploadMultipleToCloudinary = async (req, res, next) => {
   try {
     if (!req.files || req.files.length === 0) {
-      return res
-        .status(400)
-        .json({success: false, message: 'No files uploaded'});
+      return next(); // Nếu không có file, chuyển sang middleware/controller tiếp theo
     }
 
     // Upload từng file lên Cloudinary

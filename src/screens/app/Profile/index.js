@@ -6,13 +6,19 @@ import Header from '../../../components/Header';
 import ListItem from '../../../components/ListItem';
 import Button from '../../../components/Button';
 import { getProfile } from '../../../utils/backendCalls';
-import { ProfileContext } from '../../../../App';
+import { ProfileContext, ServicesContext } from '../../../../App';
 import { useAuth0 } from 'react-native-auth0';
 
 const Profile = ({ navigation }) => {
   const { clearSession } = useAuth0();
-  const num = 10;
   const { profile, setProfile } = useContext(ProfileContext);
+  const { services } = useContext(ServicesContext);
+  
+  const myServices = Array.isArray(services)
+      ? services?.filter(service => service?.userId === profile?.auth0Id)
+      : [];
+
+  const num = myServices.length;
 
   useEffect(() => {
     (async () => {

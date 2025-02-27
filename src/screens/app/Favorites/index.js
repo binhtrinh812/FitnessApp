@@ -6,7 +6,6 @@ import Header from '../../../components/Header';
 import {
   deleteSavedService,
   getSavedServices,
-  updateService,
 } from '../../../utils/backendCalls';
 import {SavedServicesContext} from '../../../../App';
 
