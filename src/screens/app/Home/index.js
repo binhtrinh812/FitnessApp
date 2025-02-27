@@ -6,10 +6,14 @@ import Header from '../../../components/Header';
 import {categories} from '../../../data/categories';
 import CategoryBox from '../../../components/CategoryBox';
 import ProductHomeItem from '../../../components/ProductHomeItem';
-import {getAllServices, getData, getSavedServices} from '../../../utils/backendCalls';
+import {
+  getAllServices,
+  getData,
+  getSavedServices,
+} from '../../../utils/backendCalls';
 import {SavedServicesContext, ServicesContext} from '../../../../App';
 import {useAuth0} from 'react-native-auth0';
-import { addTokenToAxios } from '../../../utils/request';
+import {addTokenToAxios} from '../../../utils/request';
 
 const Home = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState();
@@ -24,7 +28,7 @@ const Home = ({navigation}) => {
       const token = await getCredentials();
       addTokenToAxios(token);
       const data = await getData();
-      
+
       setServices(data.services);
       setSavedServices(data.savedServices);
     };
@@ -51,7 +55,7 @@ const Home = ({navigation}) => {
       setFilteredProducts(updatedProducts);
     } else if (!selectedCategory && keyword) {
       console.log(keyword);
-      
+
       const updatedProducts = services.filter(product =>
         product?.title?.toLowerCase().includes(keyword?.toLowerCase()),
       );

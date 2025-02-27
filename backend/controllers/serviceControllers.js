@@ -66,8 +66,10 @@ const getServicesByCategory = async (req, res) => {
 
 const updateService = async (req, res) => {
   try {
-    const imagesUrls = req.imageUrls ? req.imageUrls.push(req.body.imageUrls) : req.body.imageUrls;
-    
+    const imagesUrls = req.imageUrls
+      ? req.imageUrls.push(req.body.imageUrls)
+      : req.body.imageUrls;
+
     const updatedService = await Service.findOneAndUpdate(
       {_id: new ObjectId(req.params.id), userId: req.auth.payload.sub},
       {$set: {...req.body, images: imagesUrls}},

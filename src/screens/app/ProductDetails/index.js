@@ -1,24 +1,34 @@
-import { ScrollView, Text, Image, View, Pressable, Modal, StyleSheet } from 'react-native';
-import { styles } from './styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  ScrollView,
+  Text,
+  Image,
+  View,
+  Pressable,
+  Modal,
+  StyleSheet,
+} from 'react-native';
+import {styles} from './styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../../components/Button';
 import ImageCarousel from '../../../components/ImageCarousel';
-import { saveService, deleteSavedService } from '../../../utils/backendCalls';
-import { SavedServicesContext, ServicesContext } from '../../../../App';
-import React, { useContext, useState } from 'react';
+import {saveService, deleteSavedService} from '../../../utils/backendCalls';
+import {SavedServicesContext, ServicesContext} from '../../../../App';
+import React, {useContext, useState} from 'react';
 
-const ProductDetails = ({ route, navigation }) => {
+const ProductDetails = ({route, navigation}) => {
   const params = route?.params || {};
-  const { services } = useContext(ServicesContext);
-  const { savedServices, setSavedServices } = useContext(SavedServicesContext);
+  const {services} = useContext(ServicesContext);
+  const {savedServices, setSavedServices} = useContext(SavedServicesContext);
   const [alertVisible, setAlertVisible] = useState(false);
-  const { isMyListing } = route.params || {};
+  const {isMyListing} = route.params || {};
 
   const product = services?.find(
     service => service?._id === params?.product?._id,
   );
 
-  const isSaved = Array.isArray(savedServices) && savedServices.some(item => item._id === product?._id);  
+  const isSaved =
+    Array.isArray(savedServices) &&
+    savedServices.some(item => item._id === product?._id);
 
   const onBackPress = () => {
     navigation.goBack();
@@ -32,7 +42,9 @@ const ProductDetails = ({ route, navigation }) => {
     if (!product) return;
 
     setSavedServices(prevSavedServices => {
-      const savedList = Array.isArray(prevSavedServices) ? prevSavedServices : [];
+      const savedList = Array.isArray(prevSavedServices)
+        ? prevSavedServices
+        : [];
 
       const isAlreadySaved = savedList.some(item => item._id === product._id);
 
@@ -40,7 +52,7 @@ const ProductDetails = ({ route, navigation }) => {
       if (isAlreadySaved) {
         updatedList = savedList.filter(item => item._id !== product._id);
       } else {
-        updatedList = [...savedList, { ...product, liked: true }];
+        updatedList = [...savedList, {...product, liked: true}];
       }
       return updatedList;
     });
@@ -62,7 +74,7 @@ const ProductDetails = ({ route, navigation }) => {
         {product?.images?.length ? (
           <ImageCarousel images={product?.images} />
         ) : (
-          <Image style={styles.image} source={{ uri: product?.image }} />
+          <Image style={styles.image} source={{uri: product?.image}} />
         )}
         <View style={styles.content}>
           <Text style={styles.title}>{product?.title}</Text>
@@ -80,8 +92,13 @@ const ProductDetails = ({ route, navigation }) => {
 
       <View style={styles.footer}>
         {isMyListing ? (
-          <Pressable onPress={() => navigation.navigate('UpdateListing', { product })} style={styles.bookmarkContainer}>
-            <Image style={styles.bookmarkIcon} source={require('../../../assets/edit.png')} />
+          <Pressable
+            onPress={() => navigation.navigate('UpdateListing', {product})}
+            style={styles.bookmarkContainer}>
+            <Image
+              style={styles.bookmarkIcon}
+              source={require('../../../assets/edit.png')}
+            />
           </Pressable>
         ) : (
           <Pressable onPress={onBookmark} style={styles.bookmarkContainer}>
@@ -107,13 +124,14 @@ const ProductDetails = ({ route, navigation }) => {
               Email: support@mail.com{'\n'}
               Số điện thoại: 127282827
             </Text>
-            <Pressable style={styles.alertButton} onPress={() => setAlertVisible(false)}>
+            <Pressable
+              style={styles.alertButton}
+              onPress={() => setAlertVisible(false)}>
               <Text style={styles.alertButtonText}>Đóng</Text>
             </Pressable>
           </View>
         </View>
       </Modal>
-
     </SafeAreaView>
   );
 };

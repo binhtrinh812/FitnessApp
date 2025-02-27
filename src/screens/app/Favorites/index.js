@@ -17,7 +17,7 @@ const Favorites = ({navigation}) => {
       const data = await getSavedServices();
       setSavedServices(data);
     };
-  
+
     fetchSavedServices();
   }, []);
 
@@ -25,21 +25,21 @@ const Favorites = ({navigation}) => {
     const onProductPress = () => {
       navigation.navigate('ProductDetails', {product: item});
     };
-  
+
     const onRemove = async () => {
       const updatedServices = await deleteSavedService(item?._id);
       if (Array.isArray(updatedServices)) {
         setSavedServices(updatedServices);
       }
     };
-  
+
     const onIconPress = () => {
       Alert.alert('Bạn muốn xóa bài tập khỏi mục ưa thích?', '', [
         {text: 'Đúng', onPress: onRemove},
         {text: 'Hủy'},
       ]);
     };
-  
+
     return (
       <FavoriteItem
         onPress={onProductPress}

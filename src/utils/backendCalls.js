@@ -118,7 +118,7 @@ export const updateService = async (id, data) => {
       } else {
         formData.append(key, data[key]);
       }
-    });    
+    });
 
     const response = await request({
       url: `/services/${id}`,
@@ -126,7 +126,7 @@ export const updateService = async (id, data) => {
       data: {
         ...data,
       },
-    });    
+    });
 
     if (response) {
       return await getData();
@@ -237,6 +237,6 @@ export const deleteSavedService = async serviceId => {
 export const getData = async () => {
   const services = await getAllServices();
   const savedServices = await getSavedServices();
-  
+
   return {services, savedServices};
 };

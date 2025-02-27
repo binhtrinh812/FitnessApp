@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, {useContext, useState} from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -7,23 +7,24 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  View, Alert
+  View,
+  Alert,
 } from 'react-native';
-import { styles } from './styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {styles} from './styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Header from '../../../components/Header';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
-import { categories } from '../../../data/categories';
-import { addService } from '../../../utils/backendCalls';
-import { SavedServicesContext, ServicesContext } from '../../../../App';
+import {categories} from '../../../data/categories';
+import {addService} from '../../../utils/backendCalls';
+import {SavedServicesContext, ServicesContext} from '../../../../App';
 
-const CreateListing = ({ navigation }) => {
+const CreateListing = ({navigation}) => {
   const [images, setImages] = useState([]);
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
-  const { setServices } = useContext(ServicesContext);
+  const {setServices} = useContext(ServicesContext);
   const {setSavedServices} = useContext(SavedServicesContext);
   const [errors, setErrors] = useState({});
 
@@ -51,9 +52,9 @@ const CreateListing = ({ navigation }) => {
   };
 
   const onChange = (value, key) => {
-    setValues(val => ({ ...val, [key]: value }));
+    setValues(val => ({...val, [key]: value}));
     if (errors[key]) {
-      setErrors(prev => ({ ...prev, [key]: '' }));
+      setErrors(prev => ({...prev, [key]: ''}));
     }
   };
 
@@ -83,7 +84,7 @@ const CreateListing = ({ navigation }) => {
 
   const onSubmit = async () => {
     if (!validate()) {
-      console.log("Validation failed", errors);
+      console.log('Validation failed', errors);
       return;
     }
 
@@ -107,7 +108,7 @@ const CreateListing = ({ navigation }) => {
       setSavedServices(result.savedServices);
 
       Alert.alert('Thành công', 'Bài tập đã được thêm mới!', [
-        { text: 'OK', onPress: () => navigation.navigate('MyListings') }
+        {text: 'OK', onPress: () => navigation.navigate('MyListings')},
       ]);
     } catch (error) {
       console.error('Lỗi khi thêm bài tập:', error);
@@ -135,7 +136,7 @@ const CreateListing = ({ navigation }) => {
 
             {images?.map(image => (
               <View style={styles.imageCont} key={image?.fileName}>
-                <Image style={styles.image} source={{ uri: image?.uri }} />
+                <Image style={styles.image} source={{uri: image?.uri}} />
                 <Pressable hitSlop={20} onPress={() => onDeleteImage(image)}>
                   <Image
                     style={styles.delete}
@@ -146,11 +147,16 @@ const CreateListing = ({ navigation }) => {
             ))}
 
             {loading ? <ActivityIndicator /> : null}
-            {errors.images && <Text style={styles.errorText}>({errors.images})</Text>}
+            {errors.images && (
+              <Text style={styles.errorText}>({errors.images})</Text>
+            )}
           </View>
 
           <Text style={styles.label}>
-            Tiêu đề {errors.title && <Text style={styles.errorText}>({errors.title})</Text>}
+            Tiêu đề{' '}
+            {errors.title && (
+              <Text style={styles.errorText}>({errors.title})</Text>
+            )}
           </Text>
           <Input
             placeholder="Tiêu đề ..."
@@ -159,7 +165,10 @@ const CreateListing = ({ navigation }) => {
           />
 
           <Text style={styles.label}>
-            Danh mục {errors.category && <Text style={styles.errorText}>({errors.category})</Text>}
+            Danh mục{' '}
+            {errors.category && (
+              <Text style={styles.errorText}>({errors.category})</Text>
+            )}
           </Text>
           <Input
             placeholder="Danh mục bài tập"
@@ -170,7 +179,10 @@ const CreateListing = ({ navigation }) => {
           />
 
           <Text style={styles.label}>
-            Thời lượng {errors.time && <Text style={styles.errorText}>({errors.time})</Text>}
+            Thời lượng{' '}
+            {errors.time && (
+              <Text style={styles.errorText}>({errors.time})</Text>
+            )}
           </Text>
 
           <Input
@@ -181,7 +193,10 @@ const CreateListing = ({ navigation }) => {
           />
 
           <Text style={styles.label}>
-            Chi tiết bài tập {errors.description && <Text style={styles.errorText}>({errors.description})</Text>}
+            Chi tiết bài tập{' '}
+            {errors.description && (
+              <Text style={styles.errorText}>({errors.description})</Text>
+            )}
           </Text>
           <Input
             style={styles.textarea}
@@ -190,7 +205,6 @@ const CreateListing = ({ navigation }) => {
             onChangeText={v => onChange(v, 'description')}
             multiline
           />
-
         </KeyboardAvoidingView>
 
         <Button onPress={onSubmit} title="Thêm mới" style={styles.button} />
