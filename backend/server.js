@@ -7,6 +7,8 @@ const {checkJwt} = require('./middleware/auth.js');
 const {
   getCurrentUser,
   createNewUser,
+  updateUser,
+  getUserById,
 } = require('./controllers/userControllers.js');
 var cors = require('cors');
 const {
@@ -31,7 +33,11 @@ connectDB();
 
 app.get('/api/getCurrentUser', checkJwt, getCurrentUser);
 
+app.get('/api/getUser/:id', checkJwt, getUserById);
+
 app.post('/api/createNewUser', checkJwt, createNewUser);
+
+app.put('/api/updateUser', checkJwt, updateUser);
 
 app.post(
   '/api/services',

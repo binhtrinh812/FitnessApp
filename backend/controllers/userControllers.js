@@ -14,6 +14,19 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const auth0Id = req.params.id;
+
+    const user = await User
+      .findOne({auth0Id})
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error('❌ Error getting user:', error);
+    res.status(500).json({error: 'Error getting user'});
+  }
+};
+
 const createNewUser = async (req, res) => {
   try {
     const auth0Id = req.auth.payload.sub;
@@ -44,4 +57,35 @@ const createNewUser = async (req, res) => {
   }
 };
 
-module.exports = {getCurrentUser, createNewUser};
+const updateUser = async (req, res) => {
+  try {
+    const auth0Id = req.auth.payload.sub;    
+
+    const user = await User.findOne({auth0Id});
+    
+    if (!user) {
+      return res.status(404).json({error: 'User not found'});
+    }
+
+    const resultUpdate = await User.updateOne(
+      {auth0Id},
+      {
+        $set: {
+          ...req.body,
+          updatedAt: new Date(),
+        },
+      },
+    );
+
+    if (!resultUpdate.acknowledged) {
+      return res.status(500).json({error: 'Error updating user'});
+    }
+
+    const updatedUser = await User.findOne({auth0Id});
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({error: 'Error updating user'});
+  }
+}
+
+module.exports = {getCurrentUser, getUserById, createNewUser, updateUser};

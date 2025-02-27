@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {request} from './request';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -54,6 +53,21 @@ export const getProfile = async () => {
   }
 };
 
+export const getUserById = async id => {
+  try {
+    const response = await request({
+      url: `/getUser/${id}`,
+      method: 'get',
+    });
+
+    if (response) {
+      return response?.data;
+    }
+  } catch (e) {
+    console.log('e profile :>> ', e);
+  }
+}
+
 export const createNewUser = async idToken => {
   try {
     const response = await request({
@@ -75,8 +89,8 @@ export const createNewUser = async idToken => {
 export const updateProfile = async data => {
   try {
     const response = await request({
-      url: '/user/profile',
-      method: 'patch',
+      url: '/updateUser',
+      method: 'put',
       data,
     });
 
@@ -85,7 +99,7 @@ export const updateProfile = async data => {
       return profile;
     }
   } catch (e) {
-    // console.log('e profile :>> ', e);
+    console.log('e profile :>> ', e);
   }
 };
 
