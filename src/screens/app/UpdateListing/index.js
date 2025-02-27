@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, {useContext, useState} from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -8,19 +8,19 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Alert
+  Alert,
 } from 'react-native';
-import { styles } from './styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {styles} from './styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Header from '../../../components/Header';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
-import { categories } from '../../../data/categories';
-import { updateService } from '../../../utils/backendCalls';
-import { SavedServicesContext, ServicesContext } from '../../../../App';
+import {categories} from '../../../data/categories';
+import {updateService} from '../../../utils/backendCalls';
+import {SavedServicesContext, ServicesContext} from '../../../../App';
 
-const UpdateListing = ({ route, navigation }) => {
+const UpdateListing = ({route, navigation}) => {
   const params = route?.params || {};
   const product = params?.product || {};
   const [images, setImages] = useState([]);
@@ -29,18 +29,16 @@ const UpdateListing = ({ route, navigation }) => {
   const [imageUrls, setImageUrls] = useState(product?.images || []);
   const [values, setValues] = useState({
     title: product?.title || '',
-    category: categories.find(c => c.id === product?.category)|| {
+    category: categories.find(c => c.id === product?.category) || {
       title: 'Tất cả',
       image: require('../../../assets/weightlifting.png'),
     },
     time: product?.time || '',
-    description: product?.description || ''
-  }
-  );
-  
+    description: product?.description || '',
+  });
+
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  
 
   const goBack = () => {
     navigation.goBack();
@@ -64,10 +62,10 @@ const UpdateListing = ({ route, navigation }) => {
     setImageUrls(list => list.filter(img => img !== url));
   };
 
-  const onChange = (value, key) => {    
-    setValues(val => ({ ...val, [key]: value }));
+  const onChange = (value, key) => {
+    setValues(val => ({...val, [key]: value}));
     if (errors[key]) {
-      setErrors(prev => ({ ...prev, [key]: '' }));
+      setErrors(prev => ({...prev, [key]: ''}));
     }
   };
 
@@ -102,7 +100,7 @@ const UpdateListing = ({ route, navigation }) => {
     const data = {
       ...values,
       category: values.category?.id,
-      imageUrls
+      imageUrls,
     };
 
     try {
@@ -122,7 +120,7 @@ const UpdateListing = ({ route, navigation }) => {
     }
 
     Alert.alert('Thành công', 'Bài tập đã được cập nhật!', [
-      { text: 'OK', onPress: () => navigation.goBack() }
+      {text: 'OK', onPress: () => navigation.goBack()},
     ]);
   };
 
@@ -146,7 +144,7 @@ const UpdateListing = ({ route, navigation }) => {
 
             {images?.map(image => (
               <View style={styles.imageCont} key={image?.fileName}>
-                <Image style={styles.image} source={{ uri: image?.uri }} />
+                <Image style={styles.image} source={{uri: image?.uri}} />
                 <Pressable hitSlop={20} onPress={() => onDeleteImage(image)}>
                   <Image
                     style={styles.delete}
@@ -155,35 +153,76 @@ const UpdateListing = ({ route, navigation }) => {
                 </Pressable>
               </View>
             ))}
-            {
-              imageUrls.map((url, index) => (
-                <View style={styles.imageCont} key={index}>
-                  <Image style={styles.image} source={{ uri: url }} />
-                  <Pressable hitSlop={20} onPress={() => onDeleteImageUrls(url)}>
-                    <Image
-                      style={styles.delete}
-                      source={require('../../../assets/close.png')}
-                    />
-                  </Pressable>
-                </View>
-              ))
-            }
+            {imageUrls.map((url, index) => (
+              <View style={styles.imageCont} key={index}>
+                <Image style={styles.image} source={{uri: url}} />
+                <Pressable hitSlop={20} onPress={() => onDeleteImageUrls(url)}>
+                  <Image
+                    style={styles.delete}
+                    source={require('../../../assets/close.png')}
+                  />
+                </Pressable>
+              </View>
+            ))}
 
             {loading ? <ActivityIndicator /> : null}
-            {errors.images && <Text style={styles.errorText}>({errors.images})</Text>}
+            {errors.images && (
+              <Text style={styles.errorText}>({errors.images})</Text>
+            )}
           </View>
 
-          <Text style={styles.label}>Tiêu đề {errors.title && <Text style={styles.errorText}>({errors.title})</Text>}</Text>
-          <Input placeholder="Tiêu đề ..." value={values.title} onChangeText={v => onChange(v, 'title')} />
+          <Text style={styles.label}>
+            Tiêu đề{' '}
+            {errors.title && (
+              <Text style={styles.errorText}>({errors.title})</Text>
+            )}
+          </Text>
+          <Input
+            placeholder="Tiêu đề ..."
+            value={values.title}
+            onChangeText={v => onChange(v, 'title')}
+          />
 
-          <Text style={styles.label}>Danh mục {errors.category && <Text style={styles.errorText}>({errors.category})</Text>}</Text>
-          <Input placeholder="Danh mục bài tập" value={values.category} onChangeText={v => onChange(v, 'category')} type="picker" options={categories} />
+          <Text style={styles.label}>
+            Danh mục{' '}
+            {errors.category && (
+              <Text style={styles.errorText}>({errors.category})</Text>
+            )}
+          </Text>
+          <Input
+            placeholder="Danh mục bài tập"
+            value={values.category}
+            onChangeText={v => onChange(v, 'category')}
+            type="picker"
+            options={categories}
+          />
 
-          <Text style={styles.label}>Thời lượng {errors.time && <Text style={styles.errorText}>({errors.time})</Text>}</Text>
-          <Input placeholder="Nhập thời lượng ..." value={values.time} onChangeText={v => onChange(v, 'time')} keyboardType="numeric" />
+          <Text style={styles.label}>
+            Thời lượng{' '}
+            {errors.time && (
+              <Text style={styles.errorText}>({errors.time})</Text>
+            )}
+          </Text>
+          <Input
+            placeholder="Nhập thời lượng ..."
+            value={values.time}
+            onChangeText={v => onChange(v, 'time')}
+            keyboardType="numeric"
+          />
 
-          <Text style={styles.label}>Chi tiết bài tập {errors.description && <Text style={styles.errorText}>({errors.description})</Text>}</Text>
-          <Input style={styles.textarea} placeholder="Chi tiết ..." value={values.description} onChangeText={v => onChange(v, 'description')} multiline />
+          <Text style={styles.label}>
+            Chi tiết bài tập{' '}
+            {errors.description && (
+              <Text style={styles.errorText}>({errors.description})</Text>
+            )}
+          </Text>
+          <Input
+            style={styles.textarea}
+            placeholder="Chi tiết ..."
+            value={values.description}
+            onChangeText={v => onChange(v, 'description')}
+            multiline
+          />
         </KeyboardAvoidingView>
 
         <Button onPress={onSubmit} title="Cập nhật" style={styles.button} />

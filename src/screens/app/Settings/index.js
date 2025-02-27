@@ -1,20 +1,28 @@
-import React, { useContext, useState } from 'react';
-import { Image, Linking, Pressable, ScrollView, Text, View, Alert } from 'react-native';
-import { styles } from './styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, {useContext, useState} from 'react';
+import {
+  Image,
+  Linking,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+  Alert,
+} from 'react-native';
+import {styles} from './styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Header from '../../../components/Header';
 import ListItem from '../../../components/ListItem';
 import EditableBox from '../../../components/EditableBox';
 import Button from '../../../components/Button';
-import { ProfileContext } from '../../../../App';
-import { updateProfile } from '../../../utils/backendCalls';
+import {ProfileContext} from '../../../../App';
+import {updateProfile} from '../../../utils/backendCalls';
 
-const Settings = ({ navigation }) => {
+const Settings = ({navigation}) => {
   const [editing, setEditing] = useState(false);
-  const { profile, setProfile } = useContext(ProfileContext);
+  const {profile, setProfile} = useContext(ProfileContext);
   const [values, setValues] = useState({
     _id: profile?._id,
-    fullName: profile?.fullName,
+    fullName: profile?.nickname,
     email: profile?.email,
   });
 
@@ -27,21 +35,34 @@ const Settings = ({ navigation }) => {
       'Xác nhận lưu',
       'Bạn có chắc chắn muốn lưu thông tin đã chỉnh sửa không?',
       [
-        { text: 'Hủy', style: 'cancel' },
+        {text: 'Hủy', style: 'cancel'},
         {
           text: 'Lưu',
           onPress: async () => {
-            const updatedProfile = await updateProfile(values);
-            setProfile(updatedProfile);
-            setEditing(false);
+            try {
+              const updatedProfile = await updateProfile(values);
+              setProfile(updatedProfile);
+              setEditing(false);
+              setTimeout(() => {
+                Alert.alert('Thành công', 'Thông tin đã được cập nhật.', [
+                  {text: 'OK', onPress: () => navigation.replace('Profile')},
+                ]);
+              }, 100);
+            } catch (error) {
+              console.error('Lỗi khi cập nhật thông tin:', error);
+              Alert.alert(
+                'Lỗi',
+                'Không thể cập nhật thông tin. Vui lòng thử lại.',
+              );
+            }
           },
         },
-      ]
+      ],
     );
   };
 
   const onChange = (key, value) => {
-    setValues(v => ({ ...v, [key]: value }));
+    setValues(v => ({...v, [key]: value}));
   };
 
   const onItemPress = () => {
@@ -78,10 +99,14 @@ const Settings = ({ navigation }) => {
           editable={false}
         />
         {editing ? (
-          <Button style={styles.button} onPress={onConfirmSave} title="Lưu thông tin" />
+          <Button
+            style={styles.button}
+            onPress={onConfirmSave}
+            title="Lưu thông tin"
+          />
         ) : null}
 
-        <Text style={[styles.sectionTitle, { marginTop: 40 }]}>
+        <Text style={[styles.sectionTitle, {marginTop: 40}]}>
           Trung tâm hỗ trợ
         </Text>
         <ListItem onPress={onItemPress} style={styles.item} title="FAQ" />

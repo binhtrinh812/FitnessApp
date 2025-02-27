@@ -1,23 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Splash from './src/screens/auth/Splash';
 import Home from './src/screens/app/Home';
 import Favorites from './src/screens/app/Favorites';
 import Profile from './src/screens/app/Profile';
 import Settings from './src/screens/app/Settings';
 import ProductDetails from './src/screens/app/ProductDetails';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { colors } from './src/utils/colors';
-import { Image } from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {colors} from './src/utils/colors';
+import {Image} from 'react-native';
 import CreateListing from './src/screens/app/CreateListing';
 import UpdateListing from './src/screens/app/UpdateListing';
 import MyListings from './src/screens/app/MyListings';
-import { useAuth0 } from 'react-native-auth0';
-import { addTokenToAxios } from './src/utils/request';
+import {useAuth0} from 'react-native-auth0';
+import {addTokenToAxios} from './src/utils/request';
 import Config from 'react-native-config';
 import Toast from 'react-native-toast-message';
-
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -28,27 +27,27 @@ const ProfileStack = () => {
       <Stack.Screen
         name="Profile"
         component={Profile}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Settings"
         component={Settings}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="CreateListing"
         component={CreateListing}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="UpdateListing"
         component={UpdateListing}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="MyListings"
         component={MyListings}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );
@@ -56,8 +55,8 @@ const ProfileStack = () => {
 
 const Tabs = () => (
   <Tab.Navigator
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused }) => {
+    screenOptions={({route}) => ({
+      tabBarIcon: ({focused}) => {
         let icon;
 
         if (route.name === 'Home') {
@@ -74,7 +73,7 @@ const Tabs = () => (
             : require('./src/assets/tabs/bookmark.png');
         }
 
-        return <Image style={{ width: 24, height: 24 }} source={icon} />;
+        return <Image style={{width: 24, height: 24}} source={icon} />;
       },
       headerShown: false,
       tabBarShowLabel: false,
@@ -91,7 +90,7 @@ const Tabs = () => (
 );
 
 const Routes = () => {
-  const { user, getCredentials } = useAuth0();
+  const {user, getCredentials} = useAuth0();
 
   const theme = {
     colors: {
@@ -103,7 +102,7 @@ const Routes = () => {
     const init = async () => {
       const credentials = await getCredentials();
 
-      if (credentials) {        
+      if (credentials) {
         addTokenToAxios(`Bearer ${credentials.accessToken}`);
       }
     };
@@ -141,7 +140,6 @@ const Routes = () => {
     }
   }, [user]);
 
-
   return (
     <NavigationContainer theme={theme}>
       <Stack.Navigator>
@@ -150,12 +148,12 @@ const Routes = () => {
             <Stack.Screen
               name="Tabs"
               component={Tabs}
-              options={{ headerShown: false }}
+              options={{headerShown: false}}
             />
             <Stack.Screen
               name="ProductDetails"
               component={ProductDetails}
-              options={{ headerShown: false }}
+              options={{headerShown: false}}
             />
           </>
         ) : (
@@ -163,7 +161,7 @@ const Routes = () => {
             <Stack.Screen
               name="Splash"
               component={Splash}
-              options={{ headerShown: false }}
+              options={{headerShown: false}}
             />
           </>
         )}
