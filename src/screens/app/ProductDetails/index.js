@@ -11,7 +11,7 @@ import {styles} from './styles';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../../components/Button';
 import ImageCarousel from '../../../components/ImageCarousel';
-import {saveService, deleteSavedService} from '../../../utils/backendCalls';
+import {saveService, deleteSavedService, getUserById} from '../../../utils/backendCalls';
 import {SavedServicesContext, ServicesContext} from '../../../../App';
 import React, {useContext, useState} from 'react';
 
@@ -21,6 +21,7 @@ const ProductDetails = ({route, navigation}) => {
   const {savedServices, setSavedServices} = useContext(SavedServicesContext);
   const [alertVisible, setAlertVisible] = useState(false);
   const {isMyListing} = route.params || {};
+  const [creator, setCreator] = useState({});
 
   const product = services?.find(
     service => service?._id === params?.product?._id,
@@ -34,7 +35,9 @@ const ProductDetails = ({route, navigation}) => {
     navigation.goBack();
   };
 
-  const onContact = () => {
+  const onContact = async () => {
+    const fetchedCreator = await getUserById(product?.userId);
+    setCreator(fetchedCreator);
     setAlertVisible(true);
   };
 
@@ -120,9 +123,8 @@ const ProductDetails = ({route, navigation}) => {
           <View style={styles.alertBox}>
             <Text style={styles.alertTitle}>Thông tin tác giả</Text>
             <Text style={styles.alertMessage}>
-              Tên: No Name {'\n'}
-              Email: support@mail.com{'\n'}
-              Số điện thoại: 127282827
+              Tên:  {creator?.nickname+'\n'}
+              Email: {creator?.email+'\n'}
             </Text>
             <Pressable
               style={styles.alertButton}

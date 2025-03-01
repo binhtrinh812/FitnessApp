@@ -21,8 +21,7 @@ const Settings = ({navigation}) => {
   const [editing, setEditing] = useState(false);
   const {profile, setProfile} = useContext(ProfileContext);
   const [values, setValues] = useState({
-    _id: profile?._id,
-    fullName: profile?.nickname,
+    nickname: profile?.nickname,
     email: profile?.email,
   });
 
@@ -88,8 +87,8 @@ const Settings = ({navigation}) => {
         </View>
         <EditableBox
           label="Tên"
-          onChangeText={v => onChange('fullName', v)}
-          value={values.fullName}
+          onChangeText={v => onChange('nickname', v)}
+          value={values.nickname}
           editable={editing}
         />
         <EditableBox

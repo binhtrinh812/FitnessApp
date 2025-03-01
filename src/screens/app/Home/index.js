@@ -54,8 +54,6 @@ const Home = ({navigation}) => {
       );
       setFilteredProducts(updatedProducts);
     } else if (!selectedCategory && keyword) {
-      console.log(keyword);
-
       const updatedProducts = services.filter(product =>
         product?.title?.toLowerCase().includes(keyword?.toLowerCase()),
       );
